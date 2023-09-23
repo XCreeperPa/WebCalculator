@@ -6,7 +6,7 @@ Pi = PiApproximation()
 E = EulerNumber()
 
 
-class Stake:
+class Stake:  # 栈
     stake = []  # 栈列表，用于存储元素
     top = lenght = 0  # 栈顶指针和长度
 
@@ -38,6 +38,7 @@ class Stake:
 
 
 def calc_format(obj: str):
+    """语法糖解释模块"""
     # 去掉字符串末尾的等号字符 '='
     while obj[-1] == '=':
         obj = obj[:-1]
@@ -165,6 +166,7 @@ def calc_format(obj: str):
 
 
 def calc_check(obj: str, keys: list):
+    """语法检查模块"""
     obj = list(obj)  # 将输入的字符串转换为字符列表以便逐个字符处理
     numbers = '1234567890.'  # 数字的字符集合
     symbol_set = set(''.join(keys))  # 将操作符列表合并为一个字符集合
@@ -232,6 +234,7 @@ def calc_check(obj: str, keys: list):
 
 
 def calc_calculation(number_stake, top_n, symbol):
+    """解释计算模块"""
     __x = 0
 
     # 检查 symbol 是否是支持的运算符
@@ -308,7 +311,7 @@ def calc_stringBoom(obj: str, keys: list):
     return _list  # 返回包含操作符的列表
 
 
-def calc_main(obj, _format=True, check=True, format_in_return=False):
+def calc_main_(obj, _format=True, check=True, format_in_return=False):
     if _format:
         if format_in_return:
             obj = format_in_return = calc_format(obj=obj)  # 格式化输入字符串，并根据需要更新返回值
@@ -321,7 +324,7 @@ def calc_main(obj, _format=True, check=True, format_in_return=False):
     if check and not calc_check(obj=obj, keys=symbol_list):
         return 'Error'
 
-    # 定义运算符的优先级和关联性
+    # 定义运算符的优先级
     symbol_tuple = (
         ['(', ')'],
         ['+', '-'],
@@ -374,7 +377,7 @@ def calc_main(obj, _format=True, check=True, format_in_return=False):
                     symbol_stake[top_s] = j
                 continue
 
-            # 处理运算符优先级，确保正确的计算顺序
+            # 处理运算符优先级，确保正确地计算顺序
             while symbol_dict[symbol_stake[top_s]] >= symbol_dict[j]:
                 if j == ')' and symbol_stake[top_s] == '(':
                     top_s -= 1
@@ -402,6 +405,9 @@ def calc_main(obj, _format=True, check=True, format_in_return=False):
         return number_stake[:top_n + 1]  # 返回结果列表，不包含格式化后的字符串
 
 
+def calc_main(obj, _format=True, check=True, format_in_return=False):
+    pass
+
 def calculate(__obj: str, _format: bool = True, check: bool = True, format_in_return: bool = False):
     """
     计算数学表达式的值
@@ -426,7 +432,7 @@ def calculate(__obj: str, _format: bool = True, check: bool = True, format_in_re
                 for value in result:
                     print(value)
     """
-    return calc_main(obj=__obj, _format=_format, check=check, format_in_return=format_in_return)
+    return calc_main_(obj=__obj, _format=_format, check=check, format_in_return=format_in_return)
 
 
 def test():

@@ -46,7 +46,7 @@ class PiApproximation(float):
 class EulerNumber(float):
     DEFAULT = math.e
 
-    def __new__(cls, _value):
+    def __new__(cls):
         return super().__new__(cls, cls.DEFAULT)
 
     @staticmethod

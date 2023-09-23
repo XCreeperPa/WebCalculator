@@ -1,4 +1,4 @@
-from Constants import *
+from Constants import NAN
 
 
 class RationalNumber:

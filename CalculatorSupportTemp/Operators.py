@@ -7,15 +7,27 @@ class Operator:
     full_match_re: list[re.Pattern] = [re.compile(r"^(?![\s\S])$")]
     part_match_re: list[re.Pattern] = [re.compile(r"^(?![\s\S])")]
 
+    # @classmethod
+    # def full_match(cls, full_expression: str) -> [bool]:
+    #     return any((pattern.match(full_expression) for pattern in cls.full_match_re))
     @classmethod
-    def full_match(cls, full_expression: str) -> [bool]:
-        # return cls.full_match_re.match(full_expression)
-        return any((pattern.match(full_expression) for pattern in cls.full_match_re))
+    def full_match(cls, full_expression: str) -> None | list[str] | bool:
+        for pattern in cls.full_match_re:
+            match = pattern.match(full_expression)
+            if match:
+                return list(match.groups())
+        return None
 
+    # @classmethod
+    # def part_match(cls, part_expression: str) -> [bool]:
+    #     return any((pattern.match(part_expression) for pattern in cls.part_match_re))
     @classmethod
-    def part_match(cls, part_expression: str) -> [bool]:
-        # return cls.part_match_re.match(part_expression)
-        return any((pattern.match(part_expression) for pattern in cls.part_match_re))
+    def part_match(cls, part_expression: str) -> None | list[str] | bool:
+        for pattern in cls.part_match_re:
+            match = pattern.match(part_expression)
+            if match:
+                return list(match.groups())
+        return None
 
     calculate_arguments_count = INF
 
@@ -28,60 +40,78 @@ class SymbolOperator(Operator):
     pass
 
 
-class Addition(SymbolOperator):
+class UnaryOperator(Operator):
+    calculate_arguments_count = 1
+
+    @classmethod
+    def full_match(cls, full_expression: str) -> bool:
+        return any((pattern.match(full_expression) for pattern in cls.full_match_re))
+
+    @classmethod
+    def part_match(cls, part_expression: str) -> bool:
+        return any((pattern.match(part_expression) for pattern in cls.part_match_re))
+
+
+class BinaryOperator(Operator):
+    calculate_arguments_count = 2
+
+    @classmethod
+    def full_match(cls, full_expression: str) -> bool:
+        return any((pattern.match(full_expression) for pattern in cls.full_match_re))
+
+    @classmethod
+    def part_match(cls, part_expression: str) -> bool:
+        return any((pattern.match(part_expression) for pattern in cls.part_match_re))
+
+
+class Addition(BinaryOperator):
     full_match_re = [re.compile(r"^.+\+.+$")]
     part_match_re = [re.compile(r"^\+.+")]
-    calculate_arguments_count = 2
 
     @staticmethod
     def calculate(v1, v2) -> object:
         return v1 + v2
 
 
-class Minus(SymbolOperator):
+class Minus(BinaryOperator):
     full_match_re = [re.compile(r"^.+-.+$")]
     part_match_re = [re.compile(r"^-.+")]
-    calculate_arguments_count = 2
 
     @staticmethod
     def calculate(v1, v2) -> object:
         return v1 - v2
 
 
-class Multiplication(SymbolOperator):
+class Multiplication(BinaryOperator):
     full_match_re = [re.compile(r"^.+\*.+$")]
     part_match_re = [re.compile(r"^\*.+")]
-    calculate_arguments_count = 2
 
     @staticmethod
     def calculate(v1, v2) -> object:
         return v1 * v2
 
 
-class Division(SymbolOperator):
+class Division(BinaryOperator):
     full_match_re = [re.compile(r"^.+/.+$")]
     part_match_re = [re.compile(r"^/.+")]
-    calculate_arguments_count = 2
 
     @staticmethod
     def calculate(v1, v2) -> object:
         return v1 / v2
 
 
-class Power(SymbolOperator):
+class Power(BinaryOperator):
     full_match_re = [re.compile(r"^.+\^.+$")]
     part_match_re = [re.compile(r"^\^.+")]
-    calculate_arguments_count = 2
 
     @staticmethod
     def calculate(v1, v2) -> object:
         return v1 ** v2
 
 
-class Factorial(SymbolOperator):
+class Factorial(UnaryOperator):
     full_match_re = [re.compile(r"^.+!.*$")]
     part_match_re = [re.compile(r"^!.*")]
-    calculate_arguments_count = 1
 
     @staticmethod
     def calculate(v1, v2) -> object:
@@ -97,8 +127,8 @@ class TrigonometricFunctions(FunctionOperator):
 
 
 class Sine(TrigonometricFunctions):
-    full_match_re = [re.compile(r"^.*sin(.+).*$")]
-    part_match_re = [re.compile(r"^sin(.+).*")]
+    full_match_re = [re.compile(r"^.*sin\((.+)\).*$")]
+    part_match_re = [re.compile(r"^sin\((.+)\).*")]
     calculate_arguments_count = 1
 
     @staticmethod
@@ -107,8 +137,8 @@ class Sine(TrigonometricFunctions):
 
 
 class Cosine(TrigonometricFunctions):
-    full_match_re = [re.compile(r"^.*cos(.+).*$")]
-    part_match_re = [re.compile(r"^cos(.+).*")]
+    full_match_re = [re.compile(r"^.*cos\((.+)\).*$")]
+    part_match_re = [re.compile(r"^cos\((.+)\).*")]
     calculate_arguments_count = 1
 
     @staticmethod
@@ -117,8 +147,8 @@ class Cosine(TrigonometricFunctions):
 
 
 class Tangent(TrigonometricFunctions):
-    full_match_re = [re.compile(r"^.*tan(.+).*$")]
-    part_match_re = [re.compile(r"^tan(.+).*")]
+    full_match_re = [re.compile(r"^.*tan\((.+)\).*$")]
+    part_match_re = [re.compile(r"^tan\((.+)\).*")]
     calculate_arguments_count = 1
 
     @staticmethod
@@ -127,8 +157,8 @@ class Tangent(TrigonometricFunctions):
 
 
 class Cosecant(TrigonometricFunctions):
-    full_match_re = [re.compile(r"^.*csc(.+).*$")]
-    part_match_re = [re.compile(r"^csc(.+).*")]
+    full_match_re = [re.compile(r"^.*csc\((.+)\).*$")]
+    part_match_re = [re.compile(r"^csc\((.+)\).*")]
     calculate_arguments_count = 1
 
     @staticmethod
@@ -137,8 +167,8 @@ class Cosecant(TrigonometricFunctions):
 
 
 class Secant(TrigonometricFunctions):
-    full_match_re = [re.compile(r"^.*sec(.+).*$")]
-    part_match_re = [re.compile(r"^sec(.+).*")]
+    full_match_re = [re.compile(r"^.*sec\((.+)\).*$")]
+    part_match_re = [re.compile(r"^sec\((.+)\).*")]
     calculate_arguments_count = 1
 
     @staticmethod
@@ -147,8 +177,8 @@ class Secant(TrigonometricFunctions):
 
 
 class Cotangent(TrigonometricFunctions):
-    full_match_re = [re.compile(r"^.*cot(.+).*$")]
-    part_match_re = [re.compile(r"^cot(.+).*")]
+    full_match_re = [re.compile(r"^.*cot\((.+)\).*$")]
+    part_match_re = [re.compile(r"^cot\((.+)\).*")]
     calculate_arguments_count = 1
 
 
@@ -157,8 +187,8 @@ class InverseTrigonometricFunctions(TrigonometricFunctions):
 
 
 class Arcsine(InverseTrigonometricFunctions):
-    full_match_re = [re.compile(r"^.*asin(.+).*$")]
-    part_match_re = [re.compile(r"^asin(.+).*")]
+    full_match_re = [re.compile(r"^.*asin\((.+)\).*$")]
+    part_match_re = [re.compile(r"^asin\((.+)\).*")]
     calculate_arguments_count = 1
 
     @staticmethod
@@ -167,8 +197,8 @@ class Arcsine(InverseTrigonometricFunctions):
 
 
 class Arccosine(InverseTrigonometricFunctions):
-    full_match_re = [re.compile(r"^.*acos(.+).*$")]
-    part_match_re = [re.compile(r"^acos(.+).*")]
+    full_match_re = [re.compile(r"^.*acos\((.+)\).*$")]
+    part_match_re = [re.compile(r"^acos\((.+)\).*")]
     calculate_arguments_count = 1
 
     @staticmethod
@@ -177,8 +207,8 @@ class Arccosine(InverseTrigonometricFunctions):
 
 
 class Arctangent(InverseTrigonometricFunctions):
-    full_match_re = [re.compile(r"^.*atan(.+).*$")]
-    part_match_re = [re.compile(r"^atan(.+).*")]
+    full_match_re = [re.compile(r"^.*atan\((.+)\).*$")]
+    part_match_re = [re.compile(r"^atan\((.+)\).*")]
     calculate_arguments_count = 1
 
     @staticmethod
@@ -187,8 +217,8 @@ class Arctangent(InverseTrigonometricFunctions):
 
 
 class Arccotangent(InverseTrigonometricFunctions):
-    full_match_re = [re.compile(r"^.*acot(.+).*$")]
-    part_match_re = [re.compile(r"^acot(.+).*")]
+    full_match_re = [re.compile(r"^.*acot\((.+)\).*$")]
+    part_match_re = [re.compile(r"^acot\((.+)\).*")]
     calculate_arguments_count = 1
 
     @staticmethod
@@ -197,8 +227,8 @@ class Arccotangent(InverseTrigonometricFunctions):
 
 
 class Arccosecant(InverseTrigonometricFunctions):
-    full_match_re = [re.compile(r"^.*acsc(.+).*$")]
-    part_match_re = [re.compile(r"^acsc(.+).*")]
+    full_match_re = [re.compile(r"^.*acsc\((.+)\).*$")]
+    part_match_re = [re.compile(r"^acsc\((.+)\).*")]
     calculate_arguments_count = 1
 
     @staticmethod
@@ -207,10 +237,14 @@ class Arccosecant(InverseTrigonometricFunctions):
 
 
 class Arcsecant(InverseTrigonometricFunctions):
-    full_match_re = [re.compile(r"^.*asec(.+).*$")]
-    part_match_re = [re.compile(r"^asec(.+).*")]
+    full_match_re = [re.compile(r"^.*asec\((.+)\).*$")]
+    part_match_re = [re.compile(r"^asec\((.+)\).*")]
     calculate_arguments_count = 1
 
     @staticmethod
     def calculate(v1) -> object:
         return 1 / math.acos(v1)
+
+
+class Logarithm(InverseTrigonometricFunctions):
+    pass
