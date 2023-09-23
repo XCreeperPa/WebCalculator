@@ -1,5 +1,10 @@
 import math
 
+from RationalNumber import *
+
+RationalNumber()
+
+
 class Stake:
     stake = []  # 栈列表，用于存储元素
     top = lenght = 0  # 栈顶指针和长度
@@ -32,6 +37,7 @@ class Stake:
 
 
 def calc_format(obj: str):
+    """语法糖处理器"""
     # 去掉字符串末尾的等号字符 '='
     while obj[-1] == '=':
         obj = obj[:-1]
@@ -368,7 +374,7 @@ def calc_main(obj, _format=True, check=True, format_in_return=False):
                     symbol_stake[top_s] = j
                 continue
 
-            # 处理运算符优先级，确保正确的计算顺序
+            # 处理运算符优先级，确保正确地计算顺序
             while symbol_dict[symbol_stake[top_s]] >= symbol_dict[j]:
                 if j == ')' and symbol_stake[top_s] == '(':
                     top_s -= 1
@@ -437,17 +443,6 @@ def test():
 
 # 实装部分
 if __name__ == '__main__':
-
-    expression_list = ["1+1*2", "(1+1)*2", "2pi", "e^4", "sin(1)", "cos(1)", "tan(1)", "log2(2)", "log10(2)"]
-    # 批量计算数学表达式
-    for _e in expression_list:
-        result = calculate(__obj=_e, format_in_return=True)
-        if type(result[0]) == str:
-            print(result[0])
-        else:
-            for value in result:
-                print(value)
-
     a = 'e'
     print(a)
     x = calculate(__obj=a, format_in_return=True)

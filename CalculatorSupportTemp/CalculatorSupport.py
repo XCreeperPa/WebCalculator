@@ -1,4 +1,10 @@
-import math
+from Constants import *
+from RationalNumber import *
+
+RationalNumber()
+Pi = PiApproximation()
+E = EulerNumber()
+
 
 class Stake:
     stake = []  # 栈列表，用于存储元素
@@ -142,16 +148,16 @@ def calc_format(obj: str):
         # 处理 'pi' 后面的情况，根据前一个字符是数字还是其他字符来添加乘号 '*'
         if i > 0 and obj[i] + obj[i + 1] == 'pi':
             if obj[i - 1] in '1234567890':
-                obj = obj[:i] + '*' + str(math.pi) + obj[i + 2:]
+                obj = obj[:i] + '*' + str(Pi) + obj[i + 2:]
             else:
-                obj = obj[:i] + str(math.pi) + obj[i + 2:]
+                obj = obj[:i] + str(Pi) + obj[i + 2:]
 
         # 处理 'e' 后面的情况，根据前一个字符是数字还是其他字符来添加乘号 '*'
         if obj[i + 1] == 'e':
             if obj[i] in '1234567890':
-                obj = obj[:i + 1] + '*' + str(math.e) + obj[i + 2:]
+                obj = obj[:i + 1] + '*' + str(E) + obj[i + 2:]
             else:
-                obj = obj[:i + 1] + str(math.e) + obj[i + 2:]
+                obj = obj[:i + 1] + str(E) + obj[i + 2:]
 
         i += 1  # 移动到下一个字符继续处理
 
