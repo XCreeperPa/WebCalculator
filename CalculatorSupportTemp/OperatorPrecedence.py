@@ -1,11 +1,13 @@
 from Operators import *
 
 precedence = [
-    Bracket,
+    RightBracket,
     [Addition, Minus],
     [Multiplication, Division],
     [Power],
     [Factorial],
+    LeftBracket,
     FunctionOperator,
     Mark,
+    SpaceOperator,
 ]

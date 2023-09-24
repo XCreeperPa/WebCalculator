@@ -113,6 +113,24 @@ class Power(BinaryOperator):
         return v1 ** v2
 
 
+class Mode(BinaryOperator):
+    full_match_re = [re.compile(r"^.+%.+$")]
+    part_match_re = [re.compile(r"^%(.+)")]
+
+    @staticmethod
+    def calculate(v1, v2) -> object:
+        return v1 % v2
+
+
+class Divisibility(BinaryOperator):
+    full_match_re = [re.compile(r"^.+\|.+$")]
+    part_match_re = [re.compile(r"^\|(.+)")]
+
+    @staticmethod
+    def calculate(v1, v2) -> object:
+        return v1 // v2
+
+
 class Factorial(UnaryOperator):
     full_match_re = [re.compile(r"^.+!.*$")]
     part_match_re = [re.compile(r"^!(.*)")]
@@ -309,6 +327,20 @@ class FunctionalOperator(Operator):  # bracket and so on
     @staticmethod
     def calculate(*args) -> object | Type[Mark]:
         return super().calculate(*args)
+
+
+class SpaceBreakMark(BreakMark):
+    execute = f"""{Statements.break_}"""
+
+
+class SpaceOperator(FunctionalOperator):
+    full_match_re = [re.compile(r"^.* .*$")]
+    part_match_re = [re.compile(r"^ (.*)")]
+    execute = 0
+
+    @staticmethod
+    def calculate(*args) -> object | Type[Mark]:
+        return SpaceBreakMark
 
 
 class BracketBreakMark(BreakMark):
