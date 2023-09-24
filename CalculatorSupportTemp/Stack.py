@@ -1,38 +1,46 @@
-class Stack:  # 栈
-    stake_list = []  # 栈列表，用于存储元素
-    top = size = 0  # 栈顶指针和长度
+class Stack:
+    def __init__(self):
+        self.stack = []
 
     def push(self, obj):
-        stake, top, lenght = self.stake_list, self.top, self.size
-
-        # 如果栈顶指针大于等于栈的长度减1，表示栈已满，需要扩展栈的长度
-        if top >= lenght - 1:
-            stake.append(obj)  # 将 obj 添加到栈的末尾
-            top, lenght = lenght, lenght + 1  # 更新栈顶指针和栈的长度
-        else:
-            top += 1  # 栈顶指针加1
-            stake[top] = obj  # 将 obj 放入栈中的指定位置
-
-        self.stake_list, self.top, self.size = stake, top, lenght  # 更新类属性
-        return obj  # 返回被入栈的对象 obj
+        """将元素压入栈"""
+        self.stack.append(obj)
+        return obj
 
     def pop(self):
-        stake, top = self.stake_list, self.top
-
-        # 如果栈顶指针小于0，表示栈为空，无法出栈，返回 None
-        if top < 0:
-            return None
+        """从栈中弹出顶部元素并返回"""
+        if not self.is_empty():
+            return self.stack.pop()
         else:
-            _result = stake[top]  # 从栈中取出栈顶元素
-            top -= 1  # 栈顶指针减1
-            self.top = top  # 更新类属性中的栈顶指针
-            return _result  # 返回被出栈的元素
+            raise IndexError("Stack is empty")
 
     def mul_pop(self, n: int = 0):
-        """stack[1,2,3].mul_pop(2)==[2,3]"""
-        _result = [self.pop()] * n
-        _result.reverse()
-        return _result
+        """从栈中弹出多个元素，返回弹出的元素组成的列表"""
+        if n < 0:
+            raise ValueError("Invalid argument: n cannot be negative")
+        if n == 0:
+            return []
+        if n > len(self.stack):
+            n = len(self.stack)
+        popped_elements = self.stack[-n:]
+        self.stack = self.stack[:-n]
+        return popped_elements
 
     def top_element(self):
-        return self.stake_list[self.top]
+        """返回栈顶元素，不弹出"""
+        if not self.is_empty():
+            return self.stack[-1]
+        else:
+            raise IndexError("Stack is empty")
+
+    def is_empty(self):
+        """检查栈是否为空"""
+        return len(self.stack) == 0
+
+    def size(self):
+        """返回栈的当前大小"""
+        return len(self.stack)
+
+    def __str__(self):
+        """返回栈的字符串表示"""
+        return str(self.stack)
