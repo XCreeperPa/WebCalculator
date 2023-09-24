@@ -69,7 +69,8 @@ def calc_main(expression: str, _format=True, check=True, format_in_return=False)
         if _result and not isinstance(_result, bool):
             operand, expression = _result
             number_stack.push(operand)
-        break
+        if operators_stack.size() == 0:
+            break
     if format_in_return:
         return [number_stack.top_element(), format_in_return]
     else:
