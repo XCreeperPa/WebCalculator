@@ -1,5 +1,6 @@
 import math
 import re
+from typing import Type
 
 from Constants import NAN, INF
 from StatementSet import *
@@ -33,7 +34,10 @@ class Operator:
             if match:
                 match_groups = list(match.groups())
                 expression = match_groups.pop(-1)
-                operand = match_groups
+                if match_groups:
+                    operand = match_groups
+                else:
+                    operand = None
                 return operand, expression
         return False
 
@@ -47,8 +51,11 @@ class Operator:
 class SymbolOperator(Operator):
     @classmethod
     def part_match(cls, part_expression: str) -> tuple[None | list[str], str] | bool:
-        operand, expression = super().part_match(part_expression)
-        return None, expression
+        result = super().part_match(part_expression)
+        if isinstance(result, tuple):
+            return None, result[-1]
+        else:
+            return result
 
     pass
 
@@ -255,11 +262,19 @@ class CommonLogarithm(LogarithmicFunction):
 
     @classmethod
     def full_match(cls, full_expression: str) -> None | list[str] | bool:
-        return super().full_match(full_expression)[::-1]  # 反转列表
+        result = super().full_match(full_expression)
+        if isinstance(result, tuple):
+            return result[::-1]  # 反转列表
+        else:
+            return result
 
     @classmethod
     def part_match(cls, part_expression: str) -> None | list[str] | bool:
-        return super().part_match(part_expression)[::-1]
+        result = super().part_match(part_expression)
+        if isinstance(result, tuple):
+            return result[::-1]  # 反转列表
+        else:
+            return result
 
     @staticmethod
     def calculate(_x, _base=DEFAULT_BASE) -> object:
@@ -291,14 +306,13 @@ class BreakMark(Mark):
 
 
 class FunctionalOperator(Operator):  # bracket and so on
-    pass
+    @staticmethod
+    def calculate(*args) -> object | Type[Mark]:
+        return super().calculate(*args)
 
 
 class BracketBreakMark(BreakMark):
-    execute = f"""
-{Statements.if_} expression[index]==")":
-    {Statements.break_}
-"""
+    execute = f"""{Statements.break_}"""
 
 
 class Bracket(FunctionalOperator):
@@ -307,11 +321,11 @@ class Bracket(FunctionalOperator):
 
 class LeftBracket(Bracket):
     full_match_re = [re.compile(r"^.*\(.*\).*$")]
-    part_match_re = [re.compile(r"^\((.*)\).*")]
+    part_match_re = [re.compile(r"^\((.*\).*)")]
     execute = BracketBreakMark
 
     @staticmethod
-    def calculate():
+    def calculate() -> Type[Mark]:
         return BracketBreakMark
 
 
