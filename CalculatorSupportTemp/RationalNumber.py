@@ -1,9 +1,27 @@
+import re
+
 from Constants import NAN
 
 
 class RationalNumber:
+    parse_digits_full_re = re.compile(r"")
+    # parse_digits_full_re = re.compile(r"^.*[\d+].*$")
+    parse_digits_part_re = re.compile(r"^(\d+(\.\d+)?)(.*)$")
+
     def __init__(self):
         pass
+
+    @classmethod
+    def parse_digits_full(cls, expression):
+        pass
+
+    @classmethod
+    def parse_digits_part(cls, part_expression) -> tuple[str, str] | bool:
+        match = cls.parse_digits_part_re.match(part_expression)
+        if match:
+            operand, expression = list(match.groups())
+            return operand, expression
+        return False
 
 
 class Int(RationalNumber):

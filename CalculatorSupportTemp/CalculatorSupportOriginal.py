@@ -1,19 +1,43 @@
-from typing import Type
+import math
 
-import Operators
-from Constants import *
-from OperatorPrecedence import precedence
 from RationalNumber import *
-from Stack import Stack
 
 RationalNumber()
-Pi = PiApproximation()
-E = EulerNumber()
-precedence = precedence
+
+
+class Stake:
+    stake = []  # 栈列表，用于存储元素
+    top = lenght = 0  # 栈顶指针和长度
+
+    def push(self, obj):
+        stake, top, lenght = self.stake, self.top, self.lenght
+
+        # 如果栈顶指针大于等于栈的长度减1，表示栈已满，需要扩展栈的长度
+        if top >= lenght - 1:
+            stake.append(obj)  # 将 obj 添加到栈的末尾
+            top, lenght = lenght, lenght + 1  # 更新栈顶指针和栈的长度
+        else:
+            top += 1  # 栈顶指针加1
+            stake[top] = obj  # 将 obj 放入栈中的指定位置
+
+        self.stake, self.top, self.lenght = stake, top, lenght  # 更新类属性
+        return obj  # 返回被入栈的对象 obj
+
+    def pop(self):
+        stake, top = self.stake, self.top
+
+        # 如果栈顶指针小于0，表示栈为空，无法出栈，返回 None
+        if top < 0:
+            return None
+        else:
+            _result = stake[top]  # 从栈中取出栈顶元素
+            top -= 1  # 栈顶指针减1
+            self.top = top  # 更新类属性中的栈顶指针
+            return _result  # 返回被出栈的元素
 
 
 def calc_format(obj: str):
-    """语法糖解释模块"""
+    """语法糖处理器"""
     # 去掉字符串末尾的等号字符 '='
     while obj[-1] == '=':
         obj = obj[:-1]
@@ -124,16 +148,16 @@ def calc_format(obj: str):
         # 处理 'pi' 后面的情况，根据前一个字符是数字还是其他字符来添加乘号 '*'
         if i > 0 and obj[i] + obj[i + 1] == 'pi':
             if obj[i - 1] in '1234567890':
-                obj = obj[:i] + '*' + str(Pi) + obj[i + 2:]
+                obj = obj[:i] + '*' + str(math.pi) + obj[i + 2:]
             else:
-                obj = obj[:i] + str(Pi) + obj[i + 2:]
+                obj = obj[:i] + str(math.pi) + obj[i + 2:]
 
         # 处理 'e' 后面的情况，根据前一个字符是数字还是其他字符来添加乘号 '*'
         if obj[i + 1] == 'e':
             if obj[i] in '1234567890':
-                obj = obj[:i + 1] + '*' + str(E) + obj[i + 2:]
+                obj = obj[:i + 1] + '*' + str(math.e) + obj[i + 2:]
             else:
-                obj = obj[:i + 1] + str(E) + obj[i + 2:]
+                obj = obj[:i + 1] + str(math.e) + obj[i + 2:]
 
         i += 1  # 移动到下一个字符继续处理
 
@@ -141,7 +165,6 @@ def calc_format(obj: str):
 
 
 def calc_check(obj: str, keys: list):
-    """语法检查模块"""
     obj = list(obj)  # 将输入的字符串转换为字符列表以便逐个字符处理
     numbers = '1234567890.'  # 数字的字符集合
     symbol_set = set(''.join(keys))  # 将操作符列表合并为一个字符集合
@@ -209,7 +232,6 @@ def calc_check(obj: str, keys: list):
 
 
 def calc_calculation(number_stake, top_n, symbol):
-    """解释计算模块"""
     __x = 0
 
     # 检查 symbol 是否是支持的运算符
@@ -286,7 +308,7 @@ def calc_stringBoom(obj: str, keys: list):
     return _list  # 返回包含操作符的列表
 
 
-def calc_main_(obj, _format=True, check=True, format_in_return=False):
+def calc_main(obj, _format=True, check=True, format_in_return=False):
     if _format:
         if format_in_return:
             obj = format_in_return = calc_format(obj=obj)  # 格式化输入字符串，并根据需要更新返回值
@@ -299,7 +321,7 @@ def calc_main_(obj, _format=True, check=True, format_in_return=False):
     if check and not calc_check(obj=obj, keys=symbol_list):
         return 'Error'
 
-    # 定义运算符的优先级
+    # 定义运算符的优先级和关联性
     symbol_tuple = (
         ['(', ')'],
         ['+', '-'],
@@ -404,7 +426,7 @@ def calculate(__obj: str, _format: bool = True, check: bool = True, format_in_re
                 for value in result:
                     print(value)
     """
-    return calc_main_(obj=__obj, _format=_format, check=check, format_in_return=format_in_return)
+    return calc_main(obj=__obj, _format=_format, check=check, format_in_return=format_in_return)
 
 
 def test():
@@ -421,17 +443,6 @@ def test():
 
 # 实装部分
 if __name__ == '__main__':
-
-    expression_list = ["1+1*2", "(1+1)*2", "2pi", "e^4", "sin(1)", "cos(1)", "tan(1)", "log2(2)", "log10(2)"]
-    # 批量计算数学表达式
-    for _e in expression_list:
-        result = calculate(__obj=_e, format_in_return=True)
-        if type(result[0]) == str:
-            print(result[0])
-        else:
-            for value in result:
-                print(value)
-
     a = 'e'
     print(a)
     x = calculate(__obj=a, format_in_return=True)
