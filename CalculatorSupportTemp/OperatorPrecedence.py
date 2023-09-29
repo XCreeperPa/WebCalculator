@@ -4,7 +4,7 @@ from Utils import *
 precedence = [
     RightBracket,
     [Addition, Minus],
-    [Multiplication, Division],
+    [Multiplication, Division, Divisibility, Mode],
     [Power],
     [Factorial],
     LeftBracket,

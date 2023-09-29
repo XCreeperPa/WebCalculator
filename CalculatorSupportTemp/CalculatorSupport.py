@@ -1,3 +1,4 @@
+import decimal
 import logging
 
 from CalculatorSupport0 import calc_format  #
@@ -9,11 +10,14 @@ from RationalNumber import *
 from Stack import *
 from Utils import *
 
+decimal.getcontext().prec = 30  # 设置全局精度(单位:小数点后的位数)
+
 Pi = PiApproximation()
 E = EulerNumber()
-precedence = precedence
-DefaultCalcType: type = float
-precedence = Precedence(precedence)
+
+DefaultCalcType: type = decimal.Decimal
+
+precedence = Precedence(precedence)  # 构建优先级
 
 
 def calc_main(expression: str, _format=True, check=True, format_in_return=False):
@@ -117,13 +121,17 @@ def calc_main(expression: str, _format=True, check=True, format_in_return=False)
             break
     loop_flag0.end()
 
+    # if format_in_return:
+    #     return [nums.top_element(), format_in_return]
+    # else:
+    #     return [nums.top_element()]
     # 返回结果
-    if format_in_return:
-        return [nums.top_element(), format_in_return]
+    if nums.size() == 1:
+        print(f"output:{nums.top_element()}")
+        return str(nums.top_element())
     else:
-        return [nums.top_element()]
-
-    pass
+        print(nums.stack)
+        return str(nums.stack)
 
 
 logger = logging.getLogger(__name__)
@@ -152,9 +160,99 @@ def log(_str):
     print(_str)
 
 
-if __name__ == '__main__':
-    # 构建运算符优先级字典
+def capture_print_to_file(log_filename):
+    """
+    # 使用函数，传递日志文件名
+    close_log = capture_print_to_file('my_log_file.txt')
+    # 使用print打印消息，将同时输出到控制台和文件
+    print("This message will be captured by both console and file.")
+    # 在结束时关闭文件并恢复sys.stdout
+    close_log()
+    """
+    import sys
 
-    # log(calc_main("1+(1+1)*2"))
+    # 打开文件以捕获print输出
+    log_file = open(log_filename, 'w', encoding='utf-8')
+
+    # 自定义输出流，将输出同时发送到控制台和文件
+    class DualOutput:
+        def __init__(self, *outputs):
+            self.outputs = outputs
+
+        def write(self, text):
+            for output in self.outputs:
+                output.write(text)
+
+        def flush(self):
+            for output in self.outputs:
+                output.flush()
+
+    # 创建自定义输出流实例
+    dual_output = DualOutput(sys.stdout, log_file)
+
+    # 将sys.stdout重定向到自定义输出流
+    sys.stdout = dual_output
+
+    # 返回关闭文件的函数，以便在结束时关闭文件
+    def close_log_file():
+        log_file.close()
+        # 恢复sys.stdout到原始状态
+        sys.stdout = sys.__stdout__
+
+    return close_log_file
+
+
+def test():
+    import traceback
+    import time
+    import concurrent.futures
+
+    sleep_time = 0.8
+    repeat_time = 1
+
+    class ThreadPoolExecutorWrapper:
+        def __init__(self, max_workers=None):
+            self.executor = concurrent.futures.ThreadPoolExecutor(max_workers=max_workers)
+
+        def submit(self, func, *args, **kwargs):
+            return self.executor.submit(func, *args, **kwargs)
+
+        def map(self, func, *iterables, timeout=None, chunksize=1):
+            return self.executor.map(func, *iterables, timeout=timeout, chunksize=chunksize)
+
+        def shutdown(self):
+            self.executor.shutdown()
+
+    thread_pool = ThreadPoolExecutorWrapper(max_workers=8)
+
+    # 使用函数，传递日志文件名
+    close_log = capture_print_to_file(r'.\test\TestLog.txt')
+
+    with open(r".\test\test_expression.txt", "r", encoding="utf-8") as f:
+        # print(f.read())
+        for line in f.read().split():
+            if line.isspace():
+                continue
+            elif line.strip().startswith("#"):
+                print(line.strip())
+                continue
+            else:
+                for i in range(repeat_time):
+                    try:
+                        print("original_input:" + line.strip())
+                        thread_pool.submit(calc_main, line.strip())
+                    except Exception:
+                        log(traceback.format_exc())
+                    time.sleep(sleep_time)
+            print("\n", end="")
+    log("test done")
+    # 在结束时关闭文件并恢复sys.stdout
+    close_log()
+
+
+if __name__ == '__main__':
+    test()
+
+    log(calc_main("log(1)"))
     while True:
-        log(calc_main(input()))
+        log(calc_main(input("(Calc)>> ")))
