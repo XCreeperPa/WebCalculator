@@ -1,6 +1,6 @@
 import math
 import re
-from typing import Type
+from typing import Callable
 
 from Constants import NAN, INF
 from StatementSet import *
@@ -9,6 +9,7 @@ from StatementSet import *
 class Operator:
     full_match_re: list[re.Pattern] = [re.compile(r"^[^\s\S]$")]
     part_match_re: list[re.Pattern] = [re.compile(r"^[^\s\S]")]
+    operands_type: type | list[type] | tuple[type] = object
     execute = None
 
     # @classmethod
@@ -41,7 +42,7 @@ class Operator:
                 return operand, expression
         return False
 
-    calculate_arguments_count = INF
+    calc_args_count = INF
 
     @staticmethod
     def calculate(*args) -> object:
@@ -61,11 +62,11 @@ class SymbolOperator(Operator):
 
 
 class UnaryOperator(SymbolOperator):
-    calculate_arguments_count = 1
+    calc_args_count = 1
 
 
 class BinaryOperator(SymbolOperator):
-    calculate_arguments_count = 2
+    calc_args_count = 2
 
 
 class Addition(BinaryOperator):
@@ -145,13 +146,13 @@ class FunctionOperator(Operator):
 
 
 class TrigonometricFunctions(FunctionOperator):
-    calculate_arguments_count = 1
+    calc_args_count = 1
 
 
 class Sine(TrigonometricFunctions):
-    full_match_re = [re.compile(r"^.*sin\((.+)\).*$")]
-    part_match_re = [re.compile(r"^sin\((.+)\)(.*)")]
-    calculate_arguments_count = 1
+    full_match_re = [re.compile(r"^.*sin\((.+?)\).*$")]
+    part_match_re = [re.compile(r"^sin\((.+?)\)(.*)")]
+    calc_args_count = 1
 
     @staticmethod
     def calculate(v1) -> object:
@@ -159,9 +160,9 @@ class Sine(TrigonometricFunctions):
 
 
 class Cosine(TrigonometricFunctions):
-    full_match_re = [re.compile(r"^.*cos\((.+)\).*$")]
-    part_match_re = [re.compile(r"^cos\((.+)\)(.*)")]
-    calculate_arguments_count = 1
+    full_match_re = [re.compile(r"^.*cos\((.+?)\).*$")]
+    part_match_re = [re.compile(r"^cos\((.+?)\)(.*)")]
+    calc_args_count = 1
 
     @staticmethod
     def calculate(v1) -> object:
@@ -169,9 +170,9 @@ class Cosine(TrigonometricFunctions):
 
 
 class Tangent(TrigonometricFunctions):
-    full_match_re = [re.compile(r"^.*tan\((.+)\).*$")]
-    part_match_re = [re.compile(r"^tan\((.+)\)(.*)")]
-    calculate_arguments_count = 1
+    full_match_re = [re.compile(r"^.*tan\((.+?)\).*$")]
+    part_match_re = [re.compile(r"^tan\((.+?)\)(.*)")]
+    calc_args_count = 1
 
     @staticmethod
     def calculate(v1) -> object:
@@ -179,9 +180,9 @@ class Tangent(TrigonometricFunctions):
 
 
 class Cosecant(TrigonometricFunctions):
-    full_match_re = [re.compile(r"^.*csc\((.+)\).*$")]
-    part_match_re = [re.compile(r"^csc\((.+)\)(.*)")]
-    calculate_arguments_count = 1
+    full_match_re = [re.compile(r"^.*csc\((.+?)\).*$")]
+    part_match_re = [re.compile(r"^csc\((.+?)\)(.*)")]
+    calc_args_count = 1
 
     @staticmethod
     def calculate(v1) -> object:
@@ -189,9 +190,9 @@ class Cosecant(TrigonometricFunctions):
 
 
 class Secant(TrigonometricFunctions):
-    full_match_re = [re.compile(r"^.*sec\((.+)\).*$")]
-    part_match_re = [re.compile(r"^sec\((.+)\)(.*)")]
-    calculate_arguments_count = 1
+    full_match_re = [re.compile(r"^.*sec\((.+?)\).*$")]
+    part_match_re = [re.compile(r"^sec\((.+?)\)(.*)")]
+    calc_args_count = 1
 
     @staticmethod
     def calculate(v1) -> object:
@@ -199,9 +200,9 @@ class Secant(TrigonometricFunctions):
 
 
 class Cotangent(TrigonometricFunctions):
-    full_match_re = [re.compile(r"^.*cot\((.+)\).*$")]
-    part_match_re = [re.compile(r"^cot\((.+)\)(.*)")]
-    calculate_arguments_count = 1
+    full_match_re = [re.compile(r"^.*cot\((.+?)\).*$")]
+    part_match_re = [re.compile(r"^cot\((.+?)\)(.*)")]
+    calc_args_count = 1
 
 
 class InverseTrigonometricFunctions(TrigonometricFunctions):
@@ -209,9 +210,9 @@ class InverseTrigonometricFunctions(TrigonometricFunctions):
 
 
 class Arcsine(InverseTrigonometricFunctions):
-    full_match_re = [re.compile(r"^.*asin\((.+)\).*$")]
-    part_match_re = [re.compile(r"^asin\((.+)\)(.*)")]
-    calculate_arguments_count = 1
+    full_match_re = [re.compile(r"^.*asin\((.+?)\).*$")]
+    part_match_re = [re.compile(r"^asin\((.+?)\)(.*)")]
+    calc_args_count = 1
 
     @staticmethod
     def calculate(v1) -> object:
@@ -219,9 +220,9 @@ class Arcsine(InverseTrigonometricFunctions):
 
 
 class Arccosine(InverseTrigonometricFunctions):
-    full_match_re = [re.compile(r"^.*acos\((.+)\).*$")]
-    part_match_re = [re.compile(r"^acos\((.+)\)(.*)")]
-    calculate_arguments_count = 1
+    full_match_re = [re.compile(r"^.*acos\((.+?)\).*$")]
+    part_match_re = [re.compile(r"^acos\((.+?)\)(.*)")]
+    calc_args_count = 1
 
     @staticmethod
     def calculate(v1) -> object:
@@ -229,9 +230,9 @@ class Arccosine(InverseTrigonometricFunctions):
 
 
 class Arctangent(InverseTrigonometricFunctions):
-    full_match_re = [re.compile(r"^.*atan\((.+)\).*$")]
-    part_match_re = [re.compile(r"^atan\((.+)\)(.*)")]
-    calculate_arguments_count = 1
+    full_match_re = [re.compile(r"^.*atan\((.+?)\).*$")]
+    part_match_re = [re.compile(r"^atan\((.+?)\)(.*)")]
+    calc_args_count = 1
 
     @staticmethod
     def calculate(v1) -> object:
@@ -239,9 +240,9 @@ class Arctangent(InverseTrigonometricFunctions):
 
 
 class Arccotangent(InverseTrigonometricFunctions):
-    full_match_re = [re.compile(r"^.*acot\((.+)\).*$")]
-    part_match_re = [re.compile(r"^acot\((.+)\)(.*)")]
-    calculate_arguments_count = 1
+    full_match_re = [re.compile(r"^.*acot\((.+?)\).*$")]
+    part_match_re = [re.compile(r"^acot\((.+?)\)(.*)")]
+    calc_args_count = 1
 
     @staticmethod
     def calculate(v1) -> object:
@@ -249,9 +250,9 @@ class Arccotangent(InverseTrigonometricFunctions):
 
 
 class Arccosecant(InverseTrigonometricFunctions):
-    full_match_re = [re.compile(r"^.*acsc\((.+)\).*$")]
-    part_match_re = [re.compile(r"^acsc\((.+)\)(.*)")]
-    calculate_arguments_count = 1
+    full_match_re = [re.compile(r"^.*acsc\((.+?)\).*$")]
+    part_match_re = [re.compile(r"^acsc\((.+?)\)(.*)")]
+    calc_args_count = 1
 
     @staticmethod
     def calculate(v1) -> object:
@@ -259,9 +260,9 @@ class Arccosecant(InverseTrigonometricFunctions):
 
 
 class Arcsecant(InverseTrigonometricFunctions):
-    full_match_re = [re.compile(r"^.*asec\((.+)\).*$")]
-    part_match_re = [re.compile(r"^asec\((.+)\)(.*)")]
-    calculate_arguments_count = 1
+    full_match_re = [re.compile(r"^.*asec\((.+?)\).*$")]
+    part_match_re = [re.compile(r"^asec\((.+?)\)(.*)")]
+    calc_args_count = 1
 
     @staticmethod
     def calculate(v1) -> object:
@@ -273,9 +274,9 @@ class LogarithmicFunction(FunctionOperator):
 
 
 class CommonLogarithm(LogarithmicFunction):
-    full_match_re = [re.compile(r"^.*log(\d*)\((.+)\).*$")]
-    part_match_re = [re.compile(r"^log(\d*)\((.+)\)(.*)")]
-    calculate_arguments_count = 2
+    full_match_re = [re.compile(r"^.*log(\d*?)\((.+?)\).*$")]
+    part_match_re = [re.compile(r"^log(\d*?)\((.+?)\)(.*)")]
+    calc_args_count = 2
     DEFAULT_BASE = 10
 
     @classmethod
@@ -300,15 +301,15 @@ class CommonLogarithm(LogarithmicFunction):
 
 
 class DefaultLogarithm(CommonLogarithm):
-    full_match_re = [re.compile(r"^.*log\((.+)\).*$")]
-    part_match_re = [re.compile(r"^log\((.+)\)(.*)")]
-    calculate_arguments_count = 1
+    full_match_re = [re.compile(r"^.*log\((.+?)\).*$")]
+    part_match_re = [re.compile(r"^log\((.+?)\)(.*)")]
+    calc_args_count = 1
 
 
 class NaturalLogarithm(LogarithmicFunction):
-    full_match_re = [re.compile(r"^.*ln\((.+)\).*$")]
-    part_match_re = [re.compile(r"^ln\((.+)\)(.*)")]
-    calculate_arguments_count = 1
+    full_match_re = [re.compile(r"^.*ln\((.+?)\).*$")]
+    part_match_re = [re.compile(r"^ln\((.+?)\)(.*)")]
+    calc_args_count = 1
 
     @staticmethod
     def calculate(_x) -> object:
@@ -316,7 +317,36 @@ class NaturalLogarithm(LogarithmicFunction):
 
 
 class Mark(Operator):
-    pass
+    calc_args_count = 0
+
+
+class EndMark(Mark):
+    execute = "loop_flags.break_all()"
+
+
+class EmptyMark(Mark):
+    execute = f"{Statements.pass_}"
+
+    @classmethod
+    def calculate(cls, *args) -> object:
+        return cls
+
+
+class SetEmptyMark(EmptyMark):
+    @staticmethod
+    def execute(_globals, _locals) -> None:
+        _locals["set_operator"](EmptyMark)
+        _locals["loop_flags"].break_loop()
+
+
+# class BracketActionMark(SetEmptyMark):
+#     @staticmethod
+#     def execute(_globals: dict, _locals: dict) -> None:
+#         if _locals["operator"] is RightBracket:
+#             _locals["set_operator"](EmptyMark)
+#         else:
+#             _locals["ops"].push(BracketActionMark)
+#         _locals["loop_flags"].break_top()
 
 
 class BreakMark(Mark):
@@ -325,7 +355,7 @@ class BreakMark(Mark):
 
 class FunctionalOperator(Operator):  # bracket and so on
     @staticmethod
-    def calculate(*args) -> object | Type[Mark]:
+    def calculate(*args) -> object | type[Mark]:
         return super().calculate(*args)
 
 
@@ -339,33 +369,72 @@ class SpaceOperator(FunctionalOperator):
     execute = 0
 
     @staticmethod
-    def calculate(*args) -> object | Type[Mark]:
+    def calculate(*args) -> object | type[Mark]:
         return SpaceBreakMark
 
 
-class BracketBreakMark(BreakMark):
-    execute = f"""{Statements.break_}"""
-
-
 class Bracket(FunctionalOperator):
-    calculate_arguments_count = 0
+    calc_args_count = 0
 
 
-class LeftBracket(Bracket):
+class LeftBracket(Bracket, Mark):
     full_match_re = [re.compile(r"^.*\(.*\).*$")]
     part_match_re = [re.compile(r"^\((.*\).*)")]
-    execute = BracketBreakMark
 
-    @staticmethod
-    def calculate() -> Type[Mark]:
-        return BracketBreakMark
+    @classmethod
+    def execute(cls, _globals: dict, _locals: dict) -> None:
+        if _locals["loop_flag2"].state is False:
+            return
+        if _locals["operator"] is RightBracket:
+            if _locals["ops"].is_empty():
+                _locals["set_operator"](EndMark)
+                _locals["loop_flags"].break_all()
+            else:
+                _locals["set_operator"](EmptyMark)
+        else:
+            _locals["ops"].push(cls)
+        _locals["loop_flags"].break_top()
+
+    @classmethod
+    def calculate(cls) -> type[Mark]:
+        return EmptyMark
 
 
 class RightBracket(Bracket):
     full_match_re = [re.compile(r"^.*\(.*\).*$")]
     part_match_re = [re.compile(r"^\)(.*)")]
-    calculate_arguments_count = 0
+    calc_args_count = 0
 
     @staticmethod
     def calculate():
         return None
+
+
+def execute_check(obj) -> bool:
+    return isinstance(obj, type) and issubclass(obj, Mark) and obj.execute is not None
+
+
+def execute_complete(obj, check=True) -> Callable:
+    def none(*args, **kwargs):
+        return *args, *kwargs.values()
+
+    if (not check) or execute_check(obj):
+        return _execute_complete(obj)
+    else:
+        return none
+
+
+def _execute_complete(operator: type[Operator]) -> Callable:
+    def execute_exec(*args, **kwargs):
+        exec(operator.execute, *args, **kwargs)
+        return *args, *kwargs.values()
+
+    def execute_callable(*args, **kwargs):
+        return operator.execute(*args, **kwargs)
+
+    if isinstance(operator.execute, str):
+        return execute_exec
+    elif callable(operator):
+        return execute_callable
+    else:
+        raise ValueError(f"{operator} is not a executable string or callable object")
