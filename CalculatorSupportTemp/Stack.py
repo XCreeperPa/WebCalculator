@@ -2,10 +2,24 @@ class Stack:
     def __init__(self):
         self.stack = []
 
+    def __iter__(self):
+        return iter(self.stack[::-1])
+
+    def __getitem__(self, index):
+        return self.stack[::-1][index]
+
+    def get(self, index):
+        return self.__getitem__(index)
+
     def push(self, obj):
         """将元素压入栈"""
         self.stack.append(obj)
         return obj
+
+    def mul_push(self, *args):
+        """将多个元素压入栈"""
+        self.stack.extend(args)
+        return self
 
     def pop(self):
         """从栈中弹出顶部元素并返回"""
@@ -44,3 +58,11 @@ class Stack:
     def __str__(self):
         """返回栈的字符串表示"""
         return str(self.stack)
+
+
+class OperandStack(Stack):
+    pass
+
+
+class OperatorStack(Stack):
+    pass

@@ -23,7 +23,6 @@ class RationalNumber:
     def parse_digits_part(cls, part_expression) -> tuple[str, str] | bool:
         match = cls.parse_digits_part_re.match(part_expression)
         if match:
-            print(match.groups())
             operand, expression = list(match.groups())
             return operand, expression
         return False
