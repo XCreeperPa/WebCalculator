@@ -135,9 +135,10 @@ class Divisibility(BinaryOperator):
 class Factorial(UnaryOperator):
     full_match_re = [re.compile(r"^.+!.*$")]
     part_match_re = [re.compile(r"^!(.*)")]
+    operands_type = int
 
     @staticmethod
-    def calculate(v1, v2) -> object:
+    def calculate(v1) -> object:
         return math.factorial(v1)
 
 
@@ -196,6 +197,7 @@ class Secant(TrigonometricFunctions):
 
     @staticmethod
     def calculate(v1) -> object:
+        print(v1)
         return 1 / math.cos(float(v1))
 
 
@@ -203,6 +205,10 @@ class Cotangent(TrigonometricFunctions):
     full_match_re = [re.compile(r"^.*cot\((.+?)\).*$")]
     part_match_re = [re.compile(r"^cot\((.+?)\)(.*)")]
     calc_args_count = 1
+
+    @staticmethod
+    def calculate(v1) -> object:
+        return 1 / math.tan(float(v1))
 
 
 class InverseTrigonometricFunctions(TrigonometricFunctions):
@@ -274,26 +280,10 @@ class LogarithmicFunction(FunctionOperator):
 
 
 class CommonLogarithm(LogarithmicFunction):
-    full_match_re = [re.compile(r"^.*log(\d*?)\((.+?)\).*$")]
-    part_match_re = [re.compile(r"^log(\d*?)\((.+?)\)(.*)")]
+    full_match_re = [re.compile(r"^.*log(\d+)\((.+?)\).*$")]
+    part_match_re = [re.compile(r"^log(\d+)\((.+?)\)(.*)")]
     calc_args_count = 2
     DEFAULT_BASE = 10
-
-    @classmethod
-    def full_match(cls, full_expression: str) -> None | list[str] | bool:
-        result = super().full_match(full_expression)
-        if isinstance(result, tuple):
-            return result[::-1]  # 反转列表
-        else:
-            return result
-
-    @classmethod
-    def part_match(cls, part_expression: str) -> None | list[str] | bool:
-        result = super().part_match(part_expression)
-        if isinstance(result, tuple):
-            return result[::-1]  # 反转列表
-        else:
-            return result
 
     @staticmethod
     def calculate(_x, _base=DEFAULT_BASE) -> object:
@@ -304,6 +294,11 @@ class DefaultLogarithm(CommonLogarithm):
     full_match_re = [re.compile(r"^.*log\((.+?)\).*$")]
     part_match_re = [re.compile(r"^log\((.+?)\)(.*)")]
     calc_args_count = 1
+
+
+class LogarithmX(DefaultLogarithm):
+    full_match_re = [re.compile(r"^.*logX\((.+?)\).*$")]
+    part_match_re = [re.compile(r"^logX\((.+?)\)(.*)")]
 
 
 class NaturalLogarithm(LogarithmicFunction):
@@ -438,3 +433,10 @@ def _execute_complete(operator: type[Operator]) -> Callable:
         return execute_callable
     else:
         raise ValueError(f"{operator} is not a executable string or callable object")
+
+# import Utils
+# import pyperclip
+#
+# r = str([f"{cls.__name__}:{cls.part_match_re}" for cls in Utils.find_all_subclasses(Operator)])
+# print(r)
+# pyperclip.copy(r)
