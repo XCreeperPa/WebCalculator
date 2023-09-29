@@ -1,13 +1,13 @@
 import decimal
 import logging
 
-from .Constants import *
-from .LoopFlags import LoopFlagsGroup
-from .OperatorPrecedence import precedence, Precedence
-from .Operators import *
-from .RationalNumber import *
-from .Stack import *
-from .Utils import *
+from Constants import *
+from LoopFlags import LoopFlagsGroup
+from OperatorPrecedence import precedence, Precedence
+from Operators import *
+from RationalNumber import *
+from Stack import *
+from Utils import *
 
 decimal_context = decimal.getcontext()
 decimal_context.prec = 30  # 设置全局精度(单位:小数点后的位数)
@@ -20,7 +20,7 @@ DefaultCalcType: type = decimal.Decimal
 precedence = Precedence(precedence)  # 构造优先级
 
 
-def calc_main(expression: str, _format=True):
+def calc_main(expression: str, _format=True, _print=True):
     """主处理函数"""
 
     def set_operator(_v: type[Operator]):
@@ -219,7 +219,8 @@ def calc_format(expression: str):
 
         # 处理百分号 '%' 前面是数字而后面不是括号或数字的情况，
         # 将百分号替换为乘号 '*' 和 0.01，然后补全括号
-        if i > 0 and expression[i - 1] in '1234567890' and expression[i] == '%' and not expression[i + 1] in '([{1234567890':
+        if i > 0 and expression[i - 1] in '1234567890' and expression[i] == '%' and not expression[
+                                                                                            i + 1] in '([{1234567890':
             expression = expression[:i] + '*0.01)' + expression[i + 1:]
             j, i = i - 2, i - 1
             while expression[j] in '1234567890.':
@@ -336,7 +337,7 @@ def test():
 
 
 if __name__ == '__main__':
-    test()
+    # test()
 
     while True:
         log(calc_main(input("(Calc)>> ")))
