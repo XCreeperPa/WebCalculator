@@ -1,6 +1,7 @@
 import decimal
 import logging
 
+import CalcFormatter
 from Constants import *
 from LoopFlags import LoopFlagsGroup
 from OperatorPrecedence import precedence, Precedence
@@ -133,133 +134,135 @@ def calc_main(expression: str, _format=True, _print=True):
         return str(nums.stack)
 
 
+# def calc_format(expression: str):
+#     """语法糖解释函数"""
+#     # 去掉字符串末尾的等号字符 '='
+#     while expression[-1] == '=':
+#         expression = expression[:-1]
+#
+#     # 将字符串中的 'log10' 替换为 'logX'
+#     expression = expression.replace('log10', 'logX')
+#
+#     # 将字符串中的 'log2' 替换为 'logII'
+#     expression = expression.replace('log2', 'logII')
+#
+#     # 在整个字符串外加上圆括号 '(' 和 ')'
+#     expression = '(' + expression + ')'
+#
+#     i = 0
+#     while i < len(expression) - 1:
+#         # 处理数字后面跟着小数点的情况，补充缺失的零
+#         if expression[i] not in '1234567890' and expression[i + 1] == '.':
+#             expression = expression[:i + 1] + '0' + expression[i + 1:]
+#
+#         # 处理小数点后面不是数字的情况，补充缺失的零
+#         if expression[i] == '.' and expression[i + 1] not in '1234567890':
+#             expression = expression[:i + 1] + '0' + expression[i + 1:]
+#
+#         # 将连续的两个乘号 '**' 替换为 '^'
+#         if expression[i] == expression[i + 1] == '*':
+#             expression = expression[:i] + '^' + expression[i + 2:]
+#
+#         # 将连续的两个除号 '//' 替换为 '|'
+#         if expression[i] == expression[i + 1] == '/':
+#             expression = expression[:i] + '|' + expression[i + 2:]
+#
+#         # 将方括号 '[' 或 '{' 替换为 '('
+#         if expression[i] in '[{':
+#             expression = expression[:i] + '(' + expression[i + 1:]
+#
+#         # 将方括号 ']' 或 '}' 替换为 ')'
+#         if expression[i] in ']}':
+#             expression = expression[:i] + ')' + expression[i + 1:]
+#
+#         # 处理连续的两个减号 '--'，将其替换为加号 '+'
+#         if expression[i] == expression[i + 1] == '-':
+#             expression = expression[:i] + '+' + expression[i + 2:]
+#
+#             # 如果前一个字符和当前字符都是加号 '+'
+#             # 则将前一个加号去除，并继续处理下一个字符
+#             if expression[i - 1] == expression[i] == '+':
+#                 expression = expression[:i] + expression[i + 1:]
+#                 continue
+#
+#         # 处理连续的两个加号 '++'，将其替换为空字符 ''
+#         if expression[i] == expression[i + 1] == '+':
+#             expression = expression[:i] + expression[i + 1:]
+#             continue
+#
+#         # 处理加号 '+' 和减号 '-' 之间的情况，将加号去除
+#         if expression[i] == '+' and expression[i + 1] == '-':
+#             expression = expression[:i] + expression[i + 1:]
+#             continue
+#
+#         # 处理操作符前面是左括号并且后面是减号 '-' 的情况，
+#         # 将减号替换为零 '0'
+#         if expression[i] in '([{' and expression[i + 1] == '-':
+#             expression = expression[:i + 1] + '0' + expression[i + 1:]
+#
+#         # 处理减号 '-' 后面不是括号或数字的情况，
+#         # 在减号后添加一个零 '0'，然后补全括号
+#         if expression[i + 1] == '-' and not expression[i] in '()[]{}1234567890':
+#             expression = expression[:i + 1] + '(0' + expression[i + 1:]
+#             j = i + 4
+#             parentheses = 0
+#             while True:
+#                 j += 1
+#                 if j >= len(expression):
+#                     break
+#                 if expression[j] in '([{':
+#                     parentheses += 1
+#                 if expression[j] in ')]}':
+#                     parentheses -= 1
+#                 if expression[j] in '+-' and not parentheses:
+#                     break
+#             expression = expression[:j] + ')' + expression[j:]
+#
+#         # 处理百分号 '%' 前面是数字而后面不是括号或数字的情况，
+#         # 将百分号替换为乘号 '*' 和 0.01，然后补全括号
+#         if i > 0 and expression[i - 1] in '1234567890' and expression[i] == '%' and not expression[
+#                                                                                             i + 1] in '([{1234567890':
+#             expression = expression[:i] + '*0.01)' + expression[i + 1:]
+#             j, i = i - 2, i - 1
+#             while expression[j] in '1234567890.':
+#                 j -= 1
+#                 if j < 0:
+#                     break
+#             expression = expression[:j + 1] + '(' + expression[j + 1:]
+#
+#         # 处理连续的感叹号 '!' 和数字的情况，将感叹号替换为乘号 '*'
+#         elif expression[i] == '!' and expression[i + 1] in '1234567890':
+#             expression = expression[:i + 1] + '*' + expression[i + 1:]
+#
+#         # 处理右括号、右方括号和右大括号之后紧跟左括号、左方括号和左大括号的情况，
+#         # 在右括号后添加乘号 '*'
+#         if expression[i] in ')]}' and expression[i + 1] in '([{':
+#             expression = expression[:i + 1] + '*' + expression[i + 1:]
+#
+#         # 处理右括号、右方括号和右大括号之后紧跟数字的情况，
+#         # 在右括号后添加乘号 '*'
+#         if expression[i] in ')]}' and expression[i + 1] in '1234567890':
+#             expression = expression[:i + 1] + '*' + expression[i + 1:]
+#
+#         # 处理 'pi' 后面的情况，根据前一个字符是数字还是其他字符来添加乘号 '*'
+#         if i > 0 and expression[i] + expression[i + 1] == 'pi':
+#             if expression[i - 1] in '1234567890':
+#                 expression = expression[:i] + '*' + str(Pi) + expression[i + 2:]
+#             else:
+#                 expression = expression[:i] + str(Pi) + expression[i + 2:]
+#
+#         # 处理 'e' 后面的情况，根据前一个字符是数字还是其他字符来添加乘号 '*'
+#         if expression[i + 1] == 'e':
+#             if expression[i] in '1234567890':
+#                 expression = expression[:i + 1] + '*' + str(E) + expression[i + 2:]
+#             else:
+#                 expression = expression[:i + 1] + str(E) + expression[i + 2:]
+#
+#         i += 1  # 移动到下一个字符继续处理
+#
+#     return expression  # 返回格式化后的字符串
 def calc_format(expression: str):
-    """语法糖解释函数"""
-    # 去掉字符串末尾的等号字符 '='
-    while expression[-1] == '=':
-        expression = expression[:-1]
-
-    # 将字符串中的 'log10' 替换为 'logX'
-    expression = expression.replace('log10', 'logX')
-
-    # 将字符串中的 'log2' 替换为 'logII'
-    expression = expression.replace('log2', 'logII')
-
-    # 在整个字符串外加上圆括号 '(' 和 ')'
-    expression = '(' + expression + ')'
-
-    i = 0
-    while i < len(expression) - 1:
-        # 处理数字后面跟着小数点的情况，补充缺失的零
-        if expression[i] not in '1234567890' and expression[i + 1] == '.':
-            expression = expression[:i + 1] + '0' + expression[i + 1:]
-
-        # 处理小数点后面不是数字的情况，补充缺失的零
-        if expression[i] == '.' and expression[i + 1] not in '1234567890':
-            expression = expression[:i + 1] + '0' + expression[i + 1:]
-
-        # 将连续的两个乘号 '**' 替换为 '^'
-        if expression[i] == expression[i + 1] == '*':
-            expression = expression[:i] + '^' + expression[i + 2:]
-
-        # 将连续的两个除号 '//' 替换为 '|'
-        if expression[i] == expression[i + 1] == '/':
-            expression = expression[:i] + '|' + expression[i + 2:]
-
-        # 将方括号 '[' 或 '{' 替换为 '('
-        if expression[i] in '[{':
-            expression = expression[:i] + '(' + expression[i + 1:]
-
-        # 将方括号 ']' 或 '}' 替换为 ')'
-        if expression[i] in ']}':
-            expression = expression[:i] + ')' + expression[i + 1:]
-
-        # 处理连续的两个减号 '--'，将其替换为加号 '+'
-        if expression[i] == expression[i + 1] == '-':
-            expression = expression[:i] + '+' + expression[i + 2:]
-
-            # 如果前一个字符和当前字符都是加号 '+'
-            # 则将前一个加号去除，并继续处理下一个字符
-            if expression[i - 1] == expression[i] == '+':
-                expression = expression[:i] + expression[i + 1:]
-                continue
-
-        # 处理连续的两个加号 '++'，将其替换为空字符 ''
-        if expression[i] == expression[i + 1] == '+':
-            expression = expression[:i] + expression[i + 1:]
-            continue
-
-        # 处理加号 '+' 和减号 '-' 之间的情况，将加号去除
-        if expression[i] == '+' and expression[i + 1] == '-':
-            expression = expression[:i] + expression[i + 1:]
-            continue
-
-        # 处理操作符前面是左括号并且后面是减号 '-' 的情况，
-        # 将减号替换为零 '0'
-        if expression[i] in '([{' and expression[i + 1] == '-':
-            expression = expression[:i + 1] + '0' + expression[i + 1:]
-
-        # 处理减号 '-' 后面不是括号或数字的情况，
-        # 在减号后添加一个零 '0'，然后补全括号
-        if expression[i + 1] == '-' and not expression[i] in '()[]{}1234567890':
-            expression = expression[:i + 1] + '(0' + expression[i + 1:]
-            j = i + 4
-            parentheses = 0
-            while True:
-                j += 1
-                if j >= len(expression):
-                    break
-                if expression[j] in '([{':
-                    parentheses += 1
-                if expression[j] in ')]}':
-                    parentheses -= 1
-                if expression[j] in '+-' and not parentheses:
-                    break
-            expression = expression[:j] + ')' + expression[j:]
-
-        # 处理百分号 '%' 前面是数字而后面不是括号或数字的情况，
-        # 将百分号替换为乘号 '*' 和 0.01，然后补全括号
-        if i > 0 and expression[i - 1] in '1234567890' and expression[i] == '%' and not expression[
-                                                                                            i + 1] in '([{1234567890':
-            expression = expression[:i] + '*0.01)' + expression[i + 1:]
-            j, i = i - 2, i - 1
-            while expression[j] in '1234567890.':
-                j -= 1
-                if j < 0:
-                    break
-            expression = expression[:j + 1] + '(' + expression[j + 1:]
-
-        # 处理连续的感叹号 '!' 和数字的情况，将感叹号替换为乘号 '*'
-        elif expression[i] == '!' and expression[i + 1] in '1234567890':
-            expression = expression[:i + 1] + '*' + expression[i + 1:]
-
-        # 处理右括号、右方括号和右大括号之后紧跟左括号、左方括号和左大括号的情况，
-        # 在右括号后添加乘号 '*'
-        if expression[i] in ')]}' and expression[i + 1] in '([{':
-            expression = expression[:i + 1] + '*' + expression[i + 1:]
-
-        # 处理右括号、右方括号和右大括号之后紧跟数字的情况，
-        # 在右括号后添加乘号 '*'
-        if expression[i] in ')]}' and expression[i + 1] in '1234567890':
-            expression = expression[:i + 1] + '*' + expression[i + 1:]
-
-        # 处理 'pi' 后面的情况，根据前一个字符是数字还是其他字符来添加乘号 '*'
-        if i > 0 and expression[i] + expression[i + 1] == 'pi':
-            if expression[i - 1] in '1234567890':
-                expression = expression[:i] + '*' + str(Pi) + expression[i + 2:]
-            else:
-                expression = expression[:i] + str(Pi) + expression[i + 2:]
-
-        # 处理 'e' 后面的情况，根据前一个字符是数字还是其他字符来添加乘号 '*'
-        if expression[i + 1] == 'e':
-            if expression[i] in '1234567890':
-                expression = expression[:i + 1] + '*' + str(E) + expression[i + 2:]
-            else:
-                expression = expression[:i + 1] + str(E) + expression[i + 2:]
-
-        i += 1  # 移动到下一个字符继续处理
-
-    return expression  # 返回格式化后的字符串
+    return CalcFormatter.CalculateFormatter.format(expression)
 
 
 logger = logging.getLogger(__name__)
@@ -312,7 +315,7 @@ def test():
     thread_pool = ThreadPoolExecutorWrapper(max_workers=8)
 
     # 使用函数，传递日志文件名
-    close_log = capture_print_to_file(r'.\test\TestLog.txt')
+    close_log = capture_print_to_file(r'.\test\CalcMainTestLog.txt')
 
     with open(r".\test\test_expression.txt", "r", encoding="utf-8") as f:
         # print(f.read())

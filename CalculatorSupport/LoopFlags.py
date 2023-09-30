@@ -20,6 +20,12 @@ class LoopFlagsGroup(Stack):
         def break_loop(self):
             self.state = False
 
+        def resume(self):
+            self.state = True
+
+        def set_state(self, state):
+            self.state = state
+
         @property
         def break_flag(self):
             return not self.state

@@ -1,0 +1,74 @@
+StripEquality
+input: 1+1=
+expected: 1+1
+output: 1+1
+
+AddShellBracket
+input: 1+1
+expected: (1+1)
+output: (1+1)
+
+input: (1+1)
+expected: (1+1)
+output: (1+1)
+
+DecimalPointFormatter
+input: 1.
+expected: 1.0
+output: 1.0
+
+ExponentFormatter
+input: 2**2
+expected: 2^2
+output: 2^2
+
+DivideFormatter
+input: 3//2
+expected: 3|2
+output: 3|2
+
+ModeOrPercentFormatter
+input: 2%*100
+expected: (2/100)*100
+output: (2/100)*100
+
+input: 20%
+expected: (20/100)
+output: (20/100)
+
+ExclamationFormatter
+input: 2!3
+expected: 2!*3
+output: 2!*3
+
+LeftBracketMinusFormatter
+input: (-1)
+expected: (0-1)
+output: (0-1)
+
+LeftBracketMultipleFormatter
+input: 2(e)
+expected: 2*(e)
+output: 2*(e)
+
+RightBracketMultipleFormatter
+input: (e)2
+expected: (e)*2
+output: (e)*2
+
+BracketMultiplierFormatter
+input: (e1)(e2)
+expected: (e1)*(e2)
+output: (e1)*(e2)
+
+SubtractFormatter
+input: 1--1
+expected: 1+1
+output: 1+1
+
+PlusMinusFormatter
+input: 1+-1
+expected: 1-1
+output: 1-1
+
+test done

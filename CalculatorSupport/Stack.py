@@ -60,9 +60,15 @@ class Stack:
         return str(self.stack)
 
 
+# class MixStack(Stack):
+#     pass
+
+
 class OperandStack(Stack):
-    pass
+    def __init__(self):
+        super().__init__()
 
 
 class OperatorStack(Stack):
-    pass
+    def __init__(self):
+        super().__init__()
