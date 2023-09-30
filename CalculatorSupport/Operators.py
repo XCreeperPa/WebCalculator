@@ -374,11 +374,7 @@ class Bracket(FunctionalOperator):
 
 class LeftBracket(Bracket, Mark):
     full_match_re = [re.compile(r"^.*\(.*\).*$")]
-    part_match_re = [
-        re.compile(r"^\((.*\).*)"),
-        re.compile(r"^\[(.*].*)"),
-        re.compile(r"^\{(.*}.*)"),
-    ]
+    part_match_re = [re.compile(r"^\((.*\).*)")]
 
     @classmethod
     def execute(cls, _globals: dict, _locals: dict) -> None:
@@ -401,11 +397,7 @@ class LeftBracket(Bracket, Mark):
 
 class RightBracket(Bracket):
     full_match_re = [re.compile(r"^.*\(.*\).*$")]
-    part_match_re = [
-        re.compile(r"^\)(.*)"),
-        re.compile(r"^](.*)"),
-        re.compile(r"^}(.*)"),
-    ]
+    part_match_re = [re.compile(r"^\)(.*)")]
     calc_args_count = 0
 
     @staticmethod
@@ -428,7 +420,6 @@ def execute_complete(obj, check=True) -> Callable:
 
 
 def _execute_complete(operator: type[Operator]) -> Callable:
-    """同时支持exec字符串和函数"""
     def execute_exec(*args, **kwargs):
         exec(operator.execute, *args, **kwargs)
         return *args, *kwargs.values()
