@@ -1,0 +1,74 @@
+/* Base styles for light mode */
+body {
+    font-family: 'Arial', sans-serif;
+    transition: background-color 0.3s, color 0.3s;
+}
+/* Dark mode styles with increased specificity and !important modifier */
+body[data-theme="dark"] {
+    background-color: #18191c !important;
+    color: #e1e2e3 !important;
+}
+
+body[data-theme="dark"] .card {
+    background-color: #242526 !important;
+    border-color: #3a3b3c !important;
+}
+
+body[data-theme="dark"] .input-group .form-control,
+body[data-theme="dark"] .input-group-append .btn {
+    background-color: #3a3b3c !important;
+    color: #e1e2e3 !important;
+    border-color: #525355 !important;
+}
+
+body[data-theme="dark"] .btn-dark {
+    background-color: #525355 !important;
+    border-color: #6c6d70 !important;
+}
+
+.container {
+    max-width: 600px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.card {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.input-group {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.input-group .form-control,
+.input-group .btn {
+    border-radius: 0;
+}
+
+/* Dark mode styles */
+[data-theme="dark"] {
+    background-color: #18191c;
+    color: #e1e2e3;
+}
+
+[data-theme="dark"] .card {
+    background-color: #242526;
+    border-color: #3a3b3c;
+}
+
+[data-theme="dark"] .input-group .form-control,
+[data-theme="dark"] .input-group .btn {
+    background-color: #3a3b3c;
+    color: #e1e2e3;
+    border-color: #525355;
+}
+
+[data-theme="dark"] .btn-dark {
+    background-color: #525355;
+    border-color: #6c6d70;
+}

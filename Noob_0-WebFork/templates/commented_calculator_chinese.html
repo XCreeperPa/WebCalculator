@@ -1,0 +1,70 @@
+<!-- 声明文档类型为HTML5 -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- 声明字符编码为UTF-8 -->
+    <meta charset="utf-8"/>
+    <!-- 设置页面的视口属性 -->
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <!-- 页面标题 -->
+    <title>云计算器 WebCalculator</title>
+    <!-- 导入Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 导入FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <!-- 导入自定义CSS -->
+    <link href="{{ url_for('static', filename='commented_style_light_chinese.css') }}" rel="stylesheet">
+</head>
+
+<!--<body class="bg-light">-->
+<!-- 使用内联样式设置背景图片 -->
+<!--<body class="bg-light" style="background-image: url('{{ bg_url }}'); background-size: cover; background-repeat: no-repeat; background-attachment: fixed;">-->
+<body class="bg-light" style="background-image: url('https://media.idownloadblog.com/wp-content/uploads/2016/02/Firewatch-Wallpaper-desktop-2560x1440-yellow.jpg'); background-size: cover; background-repeat: no-repeat; background-attachment: fixed;">
+<!-- 深色模式右上角切换开关 -->
+<div style="position: absolute; top: 10px; right: 10px;">
+    <input type="checkbox" id="darkModeToggle" class="custom-control-input">
+    <label class="custom-control-label" for="darkModeToggle"><i class="fas fa-moon"></i> 深色模式</label>
+</div>
+<div class="container my-5">
+    <div class="text-center mb-4">
+        <h1><i class="fas fa-cloud"></i> 云计算器</h1>
+    </div>
+
+    <!-- 计算器输入区域 -->
+    <div class="card shadow">
+        <div class="card-body">
+            <form id="calculatorForm">
+                <div class="input-group mb-3">
+                    <!-- 用户输入的数学表达式 -->
+                    <input name="expression" class="form-control" placeholder="输入数学表达式" type="text">
+                    <div class="input-group-append">
+                        <!-- 提交按钮 -->
+                        <button class="btn btn-dark" type="submit">计算</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for Bootstrap and FontAwesome -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+<!-- Existing JavaScript function and event listener remain here -->
+<script>
+    // 深色模式切换开关事件监听
+    document.getElementById('darkModeToggle').addEventListener('change', function() {
+        if (this.checked) {
+            document.body.setAttribute('data-theme', 'dark');
+        } else {
+            document.body.removeAttribute('data-theme');
+        }
+    });
+</script>
+</body>
+
+</html>
