@@ -8,7 +8,7 @@ app = Flask(__name__)
 @app.route('/')
 def updated_index():
     # 使用 Flask 的 render_template 函数从 "calculator.html" 文件中加载 HTML 内容
-    return render_template('commented_calculator_chinese.html')
+    return render_template('calculator.html')
 
 
 @app.route('/calculate', methods=['POST'])
