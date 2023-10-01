@@ -47,7 +47,7 @@ class Logger:
         :return: io.StringIO
         """
         _io = io.StringIO()
-        _io.write("test")
+        # _io.write("test")
         self.setIO(_io)
         return _io
 

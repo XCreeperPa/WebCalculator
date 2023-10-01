@@ -209,7 +209,7 @@ def test():
 
 
 if __name__ == '__main__':
-    test()
+    # test()
 
     log(calc_main("log(1)"))
     while True:
