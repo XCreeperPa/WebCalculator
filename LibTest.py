@@ -6,11 +6,9 @@ from CalculatorSupport import calc_main, log
 # @pysnooper.snoop(depth=2)
 # @pysnooper.snoop(os.path.abspath(r".\log.log"), depth=2)
 def main():
-    io = log.create_string_io()
-    calc_main("1+(1)")
-    io.write("test")
-    io.seek(0)
-    print(io.read())
+    _io = log.create_string_io()
+    _result = calc_main("1+(1)")
+    # print(log.read())
 
 
 # print(main())
