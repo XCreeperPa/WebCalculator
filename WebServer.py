@@ -20,9 +20,7 @@ def calculate():
         io = CalculatorSupport.log.create_string_io()  # 创建io对象
         result = CalculatorSupport.calc_main(expression)  # 使用后端 API 计算结果
         io.seek(0)
-
         log = io.read()  # 获取日志结果
-        # result = log.splitlines()[0]  # 获取计算结果
 
 
         # 返回计算的结果
