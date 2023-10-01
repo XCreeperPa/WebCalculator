@@ -1,7 +1,7 @@
 from .Operators import *
 from .Utils import *
 
-operator_precedence = [
+precedence = [
     RightBracket,
     [Addition, Minus],
     [Multiplication, Division, Divisibility, Mode],

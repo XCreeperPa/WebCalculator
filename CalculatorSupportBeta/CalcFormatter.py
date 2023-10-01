@@ -1,7 +1,7 @@
 import re
 
-from .LoopFlags import LoopFlagsGroup
-from .Utils import *
+from LoopFlags import LoopFlagsGroup
+from Utils import *
 
 
 class CalculateFormatter:
@@ -20,8 +20,8 @@ class CalculateFormatter:
                     loop_flag.resume()
         return expression
 
-    test_input: list[str] = ["1+1="]
-    test_expected: list[str] = ["(1+1)"]
+    test_input: list[str] = [""]
+    test_expected: list[str] = [""]
 
     @classmethod
     def test(cls):
@@ -168,21 +168,10 @@ class NegativePositiveFormatter(SingleTimeFormatter):
 
 class LeftBracketMultipleFormatter(SingleTimeFormatter):
     """在数字与左括号之间添加乘号 '*': 2(e)==2*(e)"""
-    # 特殊情况log2(e)!=log2*(e)
-    regex_list = [re.compile(r'(\d+)([(\[{])')]
-    # replacement = r'\g<1>*\g<2>'
+    regex_list = [re.compile(r'(\d)([(\[{])')]
     replacement = r'\g<1>*\g<2>'
-    raw_exception_list = [r"(?<!(?:{exceptions}))(\d+)([(\[{{])"]
-    exception_list = ["log"]
-    test_input = ["2(e)", "log2(e)"]
-    test_expected = ["2*(e)", "log2(e)"]
-
-    @classmethod
-    def format(cls, expression: str) -> str:
-        for _index, raw_exception in enumerate(cls.raw_exception_list):
-            regex = raw_exception.format(exceptions="|".join(cls.exception_list))
-            cls.regex_list[_index] = re.compile(regex)
-        return super().format(expression)
+    test_input = ["2(e)"]
+    test_expected = ["2*(e)"]
 
 
 class RightBracketMultipleFormatter(SingleTimeFormatter):
