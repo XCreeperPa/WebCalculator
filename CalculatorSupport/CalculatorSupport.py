@@ -124,14 +124,15 @@ def calc_main(expression: str, _format=True, _print=True):
     #     return [nums.top_element()]
     # 返回结果
     if nums.size() == 1:
-        print(f"output:{nums.top_element()}")
+        log(f"output:{nums.top_element()}")
         return str(nums.top_element())
     else:
-        print(nums.stack)
+        log(f"{nums.stack}")
         return str(nums.stack)
 
 
 def calc_format(expression: str):
+    """语法糖处理"""
     return CalculateFormatter.format(expression)
 
 
