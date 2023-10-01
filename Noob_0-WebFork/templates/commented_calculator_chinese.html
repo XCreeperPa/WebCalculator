@@ -17,8 +17,15 @@
     <link href="{{ url_for('static', filename='commented_style_light_chinese.css') }}" rel="stylesheet">
 </head>
 
-<body class="bg-light">
-
+<!--<body class="bg-light">-->
+<!-- 使用内联样式设置背景图片 -->
+<!--<body class="bg-light" style="background-image: url('{{ bg_url }}'); background-size: cover; background-repeat: no-repeat; background-attachment: fixed;">-->
+<body class="bg-light" style="background-image: url('https://media.idownloadblog.com/wp-content/uploads/2016/02/Firewatch-Wallpaper-desktop-2560x1440-yellow.jpg'); background-size: cover; background-repeat: no-repeat; background-attachment: fixed;">
+<!-- 深色模式右上角切换开关 -->
+<div style="position: absolute; top: 10px; right: 10px;">
+    <input type="checkbox" id="darkModeToggle" class="custom-control-input">
+    <label class="custom-control-label" for="darkModeToggle"><i class="fas fa-moon"></i> 深色模式</label>
+</div>
 <div class="container my-5">
     <div class="text-center mb-4">
         <h1><i class="fas fa-cloud"></i> 云计算器</h1>
@@ -48,7 +55,16 @@
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
 <!-- Existing JavaScript function and event listener remain here -->
-
+<script>
+    // 深色模式切换开关事件监听
+    document.getElementById('darkModeToggle').addEventListener('change', function() {
+        if (this.checked) {
+            document.body.setAttribute('data-theme', 'dark');
+        } else {
+            document.body.removeAttribute('data-theme');
+        }
+    });
+</script>
 </body>
 
 </html>

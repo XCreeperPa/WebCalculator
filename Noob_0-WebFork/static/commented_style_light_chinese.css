@@ -3,6 +3,28 @@ body {
     font-family: 'Arial', sans-serif;
     transition: background-color 0.3s, color 0.3s;
 }
+/* Dark mode styles with increased specificity and !important modifier */
+body[data-theme="dark"] {
+    background-color: #18191c !important;
+    color: #e1e2e3 !important;
+}
+
+body[data-theme="dark"] .card {
+    background-color: #242526 !important;
+    border-color: #3a3b3c !important;
+}
+
+body[data-theme="dark"] .input-group .form-control,
+body[data-theme="dark"] .input-group-append .btn {
+    background-color: #3a3b3c !important;
+    color: #e1e2e3 !important;
+    border-color: #525355 !important;
+}
+
+body[data-theme="dark"] .btn-dark {
+    background-color: #525355 !important;
+    border-color: #6c6d70 !important;
+}
 
 .container {
     max-width: 600px;

@@ -1,4 +1,7 @@
+import json
+
 from flask import Flask, request, jsonify, render_template
+
 import CalculatorSupport
 
 # 使用 Flask 创建一个简单的 Web 服务器
@@ -22,12 +25,26 @@ def calculate():
         io.seek(0)
         log = io.read()  # 获取日志结果
 
-
         # 返回计算的结果
         return jsonify(success=True, result=str({"result": result, "log": log}))
     except Exception as e:
         # 如果出现错误，返回错误信息
         return jsonify(success=False, error=str(e))
+
+
+@app.route('/')
+def index():
+    # 尝试读取 bg.json 文件
+    try:
+        with open('bg.json', 'r') as file:
+            data = json.load(file)
+            bg_url = data.get('url', '')  # 获取URL，如果不存在，则默认为空字符串
+            print(bg_url)
+    except (FileNotFoundError, json.JSONDecodeError):
+        bg_url = ''  # 如果文件不存在或存在JSON错误，则默认没有背景
+
+    # 将背景URL传递给HTML模板
+    return render_template('commented_calculator_chinese.html', bg_url=bg_url)
 
 
 # 启动 Flask 应用
