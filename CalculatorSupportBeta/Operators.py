@@ -2,8 +2,8 @@ import math
 import re
 from typing import Callable
 
-from .Constants import NAN, INF
-from .StatementSet import *
+from Constants import NAN, INF
+from StatementSet import *
 
 
 class Operator:

@@ -1,6 +1,6 @@
 import re
 
-from .Constants import NAN
+from Constants import NAN
 
 
 def test():

@@ -1,18 +1,3 @@
-def debug(func, func_args: (list, tuple) = None, func_kwargs: dict = None,
-          snooper_args: (list, tuple) = None, snooper_kwargs: dict = None):
-    """Power by PySnooper(pysnooper.snoop)"""
-    import pysnooper
-    if func_args is None:
-        func_args = []
-    if func_kwargs is None:
-        func_kwargs = {}
-    if snooper_args is None:
-        snooper_args = []
-    if snooper_kwargs is None:
-        snooper_kwargs = {}
-    return pysnooper.snoop(*snooper_args, **snooper_kwargs)(func)(*func_args, **func_kwargs)
-
-
 def find_all_subclasses(cls) -> list:
     subclasses = list(cls.__subclasses__())
     for subclass in subclasses:

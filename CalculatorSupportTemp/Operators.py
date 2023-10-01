@@ -152,7 +152,7 @@ class TrigonometricFunctions(FunctionOperator):
 
 class Sine(TrigonometricFunctions):
     full_match_re = [re.compile(r"^.*sin\((.+?)\).*$")]
-    part_match_re = [re.compile(r"^sin\((.+?)\)(.*)")]
+    part_match_re = [re.compile(r"^sin(\(.+?\).*)")]
     calc_args_count = 1
 
     @staticmethod
@@ -162,7 +162,7 @@ class Sine(TrigonometricFunctions):
 
 class Cosine(TrigonometricFunctions):
     full_match_re = [re.compile(r"^.*cos\((.+?)\).*$")]
-    part_match_re = [re.compile(r"^cos\((.+?)\)(.*)")]
+    part_match_re = [re.compile(r"^cos(\(.+?\).*)")]
     calc_args_count = 1
 
     @staticmethod
@@ -172,7 +172,7 @@ class Cosine(TrigonometricFunctions):
 
 class Tangent(TrigonometricFunctions):
     full_match_re = [re.compile(r"^.*tan\((.+?)\).*$")]
-    part_match_re = [re.compile(r"^tan\((.+?)\)(.*)")]
+    part_match_re = [re.compile(r"^tan(\(.+?\).*)")]
     calc_args_count = 1
 
     @staticmethod
@@ -182,7 +182,7 @@ class Tangent(TrigonometricFunctions):
 
 class Cosecant(TrigonometricFunctions):
     full_match_re = [re.compile(r"^.*csc\((.+?)\).*$")]
-    part_match_re = [re.compile(r"^csc\((.+?)\)(.*)")]
+    part_match_re = [re.compile(r"^csc(\(.+?\).*)")]
     calc_args_count = 1
 
     @staticmethod
@@ -192,7 +192,7 @@ class Cosecant(TrigonometricFunctions):
 
 class Secant(TrigonometricFunctions):
     full_match_re = [re.compile(r"^.*sec\((.+?)\).*$")]
-    part_match_re = [re.compile(r"^sec\((.+?)\)(.*)")]
+    part_match_re = [re.compile(r"^sec(\(.+?\).*)")]
     calc_args_count = 1
 
     @staticmethod
@@ -203,7 +203,7 @@ class Secant(TrigonometricFunctions):
 
 class Cotangent(TrigonometricFunctions):
     full_match_re = [re.compile(r"^.*cot\((.+?)\).*$")]
-    part_match_re = [re.compile(r"^cot\((.+?)\)(.*)")]
+    part_match_re = [re.compile(r"^cot(\(.+?\).*)")]
     calc_args_count = 1
 
     @staticmethod
@@ -217,7 +217,7 @@ class InverseTrigonometricFunctions(TrigonometricFunctions):
 
 class Arcsine(InverseTrigonometricFunctions):
     full_match_re = [re.compile(r"^.*asin\((.+?)\).*$")]
-    part_match_re = [re.compile(r"^asin\((.+?)\)(.*)")]
+    part_match_re = [re.compile(r"^asin(\(.+?\).*)")]
     calc_args_count = 1
 
     @staticmethod
@@ -227,7 +227,7 @@ class Arcsine(InverseTrigonometricFunctions):
 
 class Arccosine(InverseTrigonometricFunctions):
     full_match_re = [re.compile(r"^.*acos\((.+?)\).*$")]
-    part_match_re = [re.compile(r"^acos\((.+?)\)(.*)")]
+    part_match_re = [re.compile(r"^acos(\(.+?\).*)")]
     calc_args_count = 1
 
     @staticmethod
@@ -237,7 +237,7 @@ class Arccosine(InverseTrigonometricFunctions):
 
 class Arctangent(InverseTrigonometricFunctions):
     full_match_re = [re.compile(r"^.*atan\((.+?)\).*$")]
-    part_match_re = [re.compile(r"^atan\((.+?)\)(.*)")]
+    part_match_re = [re.compile(r"^atan(\(.+?\).*)")]
     calc_args_count = 1
 
     @staticmethod
@@ -247,7 +247,7 @@ class Arctangent(InverseTrigonometricFunctions):
 
 class Arccotangent(InverseTrigonometricFunctions):
     full_match_re = [re.compile(r"^.*acot\((.+?)\).*$")]
-    part_match_re = [re.compile(r"^acot\((.+?)\)(.*)")]
+    part_match_re = [re.compile(r"^acot(\(.+?\).*)")]
     calc_args_count = 1
 
     @staticmethod
@@ -257,7 +257,7 @@ class Arccotangent(InverseTrigonometricFunctions):
 
 class Arccosecant(InverseTrigonometricFunctions):
     full_match_re = [re.compile(r"^.*acsc\((.+?)\).*$")]
-    part_match_re = [re.compile(r"^acsc\((.+?)\)(.*)")]
+    part_match_re = [re.compile(r"^acsc(\(.+?\).*)")]
     calc_args_count = 1
 
     @staticmethod
@@ -267,7 +267,7 @@ class Arccosecant(InverseTrigonometricFunctions):
 
 class Arcsecant(InverseTrigonometricFunctions):
     full_match_re = [re.compile(r"^.*asec\((.+?)\).*$")]
-    part_match_re = [re.compile(r"^asec\((.+?)\)(.*)")]
+    part_match_re = [re.compile(r"^asec(\(.+?\).*)")]
     calc_args_count = 1
 
     @staticmethod
@@ -281,7 +281,7 @@ class LogarithmicFunction(FunctionOperator):
 
 class CommonLogarithm(LogarithmicFunction):
     full_match_re = [re.compile(r"^.*log(\d+)\((.+?)\).*$")]
-    part_match_re = [re.compile(r"^log(\d+)\((.+?)\)(.*)")]
+    part_match_re = [re.compile(r"^log(\d+)(\(.+?\).*)")]
     calc_args_count = 2
     DEFAULT_BASE = 10
 
@@ -292,18 +292,18 @@ class CommonLogarithm(LogarithmicFunction):
 
 class DefaultLogarithm(CommonLogarithm):
     full_match_re = [re.compile(r"^.*log\((.+?)\).*$")]
-    part_match_re = [re.compile(r"^log\((.+?)\)(.*)")]
+    part_match_re = [re.compile(r"^log(\(.+?\).*)")]
     calc_args_count = 1
 
 
 class LogarithmX(DefaultLogarithm):
     full_match_re = [re.compile(r"^.*logX\((.+?)\).*$")]
-    part_match_re = [re.compile(r"^logX\((.+?)\)(.*)")]
+    part_match_re = [re.compile(r"^logX(\(.+?\).*)")]
 
 
 class NaturalLogarithm(LogarithmicFunction):
     full_match_re = [re.compile(r"^.*ln\((.+?)\).*$")]
-    part_match_re = [re.compile(r"^ln\((.+?)\)(.*)")]
+    part_match_re = [re.compile(r"^ln(\(.+?\).*)")]
     calc_args_count = 1
 
     @staticmethod
