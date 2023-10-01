@@ -9,6 +9,7 @@ class Logger:
         :param output: 输出流对象，如文件对象。如果为 None，则默认使用 print 输出
         """
         self._output: io.IOBase | None = output
+        self.position: int = 0
 
     def log(self, message):
         """
@@ -72,33 +73,17 @@ class Logger:
         :return: str
         """
         if self._output:
-            self._output.seek(0)
-            return self._output.read()
+            if isinstance(self._output, io.StringIO):
+                content = self._output.getvalue()
+            elif isinstance(self._output, io.FileIO):
+                content = self._output.readall()
+            else:
+                content = self._output.read()
+            position = self.position
+            self.position = len(content)
+            return content[position:]
         else:
             return ""
-
-    def readline(self):
-        """
-        readline读取日志IO
-
-        :return: str
-        """
-        if self._output:
-            return self._output.readline()
-        else:
-            return ""
-
-    def readlines(self):
-        """
-        按行读取日志IO，返回一个包含所有行的列表
-
-        :return: List[str]
-        """
-        if self._output:
-            self._output.seek(0)
-            return self._output.readlines()
-        else:
-            return []
 
     def __call__(self, message):
         """

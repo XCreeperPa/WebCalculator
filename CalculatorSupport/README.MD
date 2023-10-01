@@ -15,9 +15,7 @@
     - currentIO(): 获取当前的输出流对象, 如果没有指定输出流对象，则返回None
     - create_string_io(): 创建自定义内存输出流实例
     - create_file_io(self, file: str, mode: str = 'w', encoding: str = None, newline: str = None): 创建自定义文件输出流实例
-    - read(): 读取日志默认IO, 等同于`log.currentIO().read()`
-    - readline(): 读取日志默认IO, 等同于`log.currentIO().readline()`
-    - readlines(): 读取日志默认IO, 等同于`log.currentIO().readlines()`
+    - read(): 读取日志默认IO, 类似于`log.currentIO().read()`, 但是每次只返回更新的部分
 
 - operator_precedence: OperatorPrecedence.OperatorPrecedence  
   *运算符优先级存储*  

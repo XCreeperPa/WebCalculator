@@ -8,7 +8,11 @@ from CalculatorSupport import calc_main, log
 def main():
     _io = log.create_string_io()
     _result = calc_main("1+(1)")
-    # print(log.read())
+    _io.seek(0)
+    print(log.read())
+    _result = calc_main("2**10")
+    _io.seek(0)
+    print(log.read())
 
 
 # print(main())
