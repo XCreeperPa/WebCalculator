@@ -5,7 +5,7 @@ body, html {
     padding: 0;
     min-height: 100vh;
     font-family: 'Roboto', sans-serif;
-    background-image: url('/static/background.jpg');
+    background-image: url('/static/background2.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     height: 850px;  /* Limit the height */
@@ -46,6 +46,7 @@ input[type="text"] {
     color: #555;
     font-size: 30px;
     width: 550px;
+    text-align: center;
 }
 
 input[type="submit"] {

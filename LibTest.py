@@ -21,5 +21,5 @@ def calc_main_user_test():
 # print(calc_main("sin(1+1)"))
 # print(Utils.debug(calc_main, ("log2(1+1)",)))
 if __name__ == '__main__':
-    # main()
-    calc_main_user_test()
+    main()
+    # calc_main_user_test()
