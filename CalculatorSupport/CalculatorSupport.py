@@ -2,6 +2,7 @@ import decimal
 
 from .CalcFormatter import CalculateFormatter
 from .Constants import *
+from .ExpressionInscriber import ExpressionInscriber
 from .Logger import Logger
 from .LoopFlags import LoopFlagsGroup
 from .OperatorPrecedence import operator_precedence, OperatorPrecedence
@@ -37,6 +38,7 @@ def calc_main(expression: str, _format=True, _print=True):
     # 存储原表达式
     original_expression = expression
     log(expression)
+    record = ExpressionInscriber(original_expression)
     # 初始化数字和操作符栈
     expression_stack = ExpressionStack(original_expression)
     nums = OperandStack(expression_stack)
@@ -56,6 +58,7 @@ def calc_main(expression: str, _format=True, _print=True):
                 continue
 
             operands, expression = match  # 提取操作数和剩余的表达式
+            record(expression)
             if operands is not None:  # 矫正操作数格式
                 operands = [DefaultCalcType(operand) if not isinstance(operand, DefaultCalcType) else operand
                             for operand in operands]
@@ -90,7 +93,18 @@ def calc_main(expression: str, _format=True, _print=True):
                         _index += 1
                     loop_flag3.end()
 
-                    product = calc_operator.calculate(*calc_operand)  # 执行计算
+                    try:
+                        product = calc_operator.calculate(*calc_operand)  # 执行计算
+                    except Exception as e:
+                        if calc_args_count:
+                            _seq = ", "
+                            operator_log = f"{calc_operator.__name__}({_seq.join(map(str, calc_operand))})"
+                            log(operator_log)
+                            log("^"*len(operator_log))
+                        log(original_expression + "\n" +
+                            "^" * len(record.get_former_differ_expression(0, record.size - 1)))
+                        log(e.__repr__())
+                        return e
 
                     if calc_args_count:
                         _seq = ", "
@@ -115,6 +129,7 @@ def calc_main(expression: str, _format=True, _print=True):
         if match and not isinstance(match, bool):  # 如果成功提取了数字
             operands, expression = match  # 提取操作数和剩余的表达式
             nums.push(DefaultCalcType(operands))  # 将操作数压入数字栈
+            record(expression)
         if ops.is_empty():  # 如果操作符栈为空，说明表达式处理完成
             break
     loop_flag0.end()
@@ -124,6 +139,7 @@ def calc_main(expression: str, _format=True, _print=True):
     # else:
     #     return [nums.top_element()]
     # 返回结果
+    print(record.former_increase_differ_list)
     if nums.size() == 1:
         log(f"output:{nums.top_element()}")
         return str(nums.top_element())
