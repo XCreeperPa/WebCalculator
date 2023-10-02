@@ -18,7 +18,8 @@ class Stack:
 
     def mul_push(self, *args):
         """将多个元素压入栈"""
-        self.stack.extend(args)
+        for _obj in args:
+            self.push(_obj)
         return self
 
     def pop(self):
@@ -55,20 +56,88 @@ class Stack:
         """返回栈的当前大小"""
         return len(self.stack)
 
+    def clear(self):
+        """清空栈"""
+        self.stack.clear()
+
     def __str__(self):
         """返回栈的字符串表示"""
         return str(self.stack)
 
 
-# class MixStack(Stack):
-#     pass
-
-
-class OperandStack(Stack):
-    def __init__(self):
+class CalcStack(Stack):
+    def __init__(self, expression_stack=None):
         super().__init__()
+        self.expression_stack: ExpressionStack = expression_stack
+
+    def push(self, obj):
+        super().push(obj)
+        self.expression_stack.push(self)
+
+    def pop(self):
+        _obj = super().pop()
+        if self.expression_stack is not None:
+            self.expression_stack.update()
+        return _obj
+
+    def mul_pop(self, n: int = 0):
+        _objs = super().mul_pop(n)
+        if self.expression_stack is not None:
+            self.expression_stack.update()
+        return _objs
 
 
-class OperatorStack(Stack):
-    def __init__(self):
+class OperandStack(CalcStack):
+    def __init__(self, expression_stack=None):
+        super().__init__(expression_stack)
+
+
+class OperatorStack(CalcStack):
+    def __init__(self, expression_stack=None):
+        super().__init__(expression_stack)
+
+
+class ExpressionStack(Stack):
+    class StackPointer:
+        def __init__(self, index, stack: Stack):
+            self.index = index
+            self.stack = stack
+
+        def get(self):
+            return self.stack.stack[self.index]
+
+    def __init__(self,original_expression=None):
         super().__init__()
+        self.original_expression = original_expression
+
+    def push(self, stack: Stack):
+        super().push(self.StackPointer(stack.size() - 1, stack))
+
+    def mul_push(self, *args):
+        for arg in args:
+            self.push(arg)
+        return self
+
+    def pop(self, *_):
+        raise NotImplementedError
+
+    def mul_pop(self, *_):
+        raise NotImplementedError
+
+    def get(self, index):
+        self.update()
+        return super().get(index).get()
+
+    def get_all(self):
+        self.update()
+        return [p.get() for p in self.stack]
+
+    def update(self):
+        i = 0
+        while i < self.size():
+            try:
+                self.stack[i].get()
+            except IndexError:
+                self.stack.pop(i)
+            else:
+                i += 1

@@ -5,12 +5,12 @@ from RationalNumber import *
 RationalNumber()
 
 
-class Stake:
-    stake = []  # 栈列表，用于存储元素
+class Stack:
+    stack = []  # 栈列表，用于存储元素
     top = lenght = 0  # 栈顶指针和长度
 
     def push(self, obj):
-        stake, top, lenght = self.stake, self.top, self.lenght
+        stake, top, lenght = self.stack, self.top, self.lenght
 
         # 如果栈顶指针大于等于栈的长度减1，表示栈已满，需要扩展栈的长度
         if top >= lenght - 1:
@@ -20,11 +20,11 @@ class Stake:
             top += 1  # 栈顶指针加1
             stake[top] = obj  # 将 obj 放入栈中的指定位置
 
-        self.stake, self.top, self.lenght = stake, top, lenght  # 更新类属性
+        self.stack, self.top, self.lenght = stake, top, lenght  # 更新类属性
         return obj  # 返回被入栈的对象 obj
 
     def pop(self):
-        stake, top = self.stake, self.top
+        stake, top = self.stack, self.top
 
         # 如果栈顶指针小于0，表示栈为空，无法出栈，返回 None
         if top < 0:
