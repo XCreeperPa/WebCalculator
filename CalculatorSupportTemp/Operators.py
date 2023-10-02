@@ -331,7 +331,7 @@ class SetEmptyMark(EmptyMark):
     @staticmethod
     def execute(_globals, _locals) -> None:
         _locals["set_operator"](EmptyMark)
-        _locals["loop_flags"].break_loop()
+        _globals["loop_flags"].break_loop()
 
 
 # class BracketActionMark(SetEmptyMark):
@@ -341,7 +341,7 @@ class SetEmptyMark(EmptyMark):
 #             _locals["set_operator"](EmptyMark)
 #         else:
 #             _locals["ops"].push(BracketActionMark)
-#         _locals["loop_flags"].break_top()
+#         _globals["loop_flags"].break_top()
 
 
 class BreakMark(Mark):
@@ -387,12 +387,12 @@ class LeftBracket(Bracket, Mark):
         if _locals["operator"] is RightBracket:
             if _locals["ops"].is_empty():
                 _locals["set_operator"](EndMark)
-                _locals["loop_flags"].break_all()
+                _globals["loop_flags"].break_all()
             else:
                 _locals["set_operator"](EmptyMark)
         else:
             _locals["ops"].push(cls)
-        _locals["loop_flags"].break_top()
+        _globals["loop_flags"].break_top()
 
     @classmethod
     def calculate(cls) -> type[Mark]:

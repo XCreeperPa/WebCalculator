@@ -29,6 +29,7 @@ def calc_main(expression: str, _format=True, _print=True):
         nonlocal operator
         operator = _v
 
+    loop_flags.clear()
     # 格式化输入字符串，并根据需要更新返回值
     if _format:
         expression = calc_format(expression=expression)
@@ -37,11 +38,11 @@ def calc_main(expression: str, _format=True, _print=True):
     original_expression = expression
     log(expression)
     # 初始化数字和操作符栈
-    nums = OperandStack()
-    ops = OperatorStack()
+    expression_stack = ExpressionStack(original_expression)
+    nums = OperandStack(expression_stack)
+    ops = OperatorStack(expression_stack)
     # 获取所有的操作符类
     operators: list[type[Operator]] = find_all_subclasses(Operator)
-    loop_flags = LoopFlagsGroup()
 
     loop_flag0 = loop_flags.new()
     while loop_flag0:  # 循环处理整个表达式
@@ -188,6 +189,8 @@ def test():
     # 在结束时关闭文件并恢复sys.stdout
     close_log()
 
+
+loop_flags = LoopFlagsGroup()
 
 if __name__ == '__main__':
     # test()

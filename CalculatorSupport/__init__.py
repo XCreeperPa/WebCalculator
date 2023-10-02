@@ -25,6 +25,7 @@ from . import Constants
 from . import OperatorPrecedence
 from . import Operators
 from . import RationalNumber
-from .CalculatorSupport import *
+from . import CalculatorSupport
+from .CalculatorSupport import calc_main, calc_format, log
 
 __all__ = ["calc_main", "calc_format", "Operators", "OperatorPrecedence", "RationalNumber", "Constants", "log"]
