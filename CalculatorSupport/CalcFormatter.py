@@ -1,5 +1,6 @@
 import re
 
+from CalculatorSupport.CalcFormatterPrecedence import PriorityTreeForFormatters
 from .LoopFlags import LoopFlagsGroup
 from .Utils import *
 
@@ -7,13 +8,16 @@ from .Utils import *
 class CalculateFormatter:
     @staticmethod
     def format(expression: str) -> str:
-        for formatter in find_all_subclasses(SingleTimeFormatter):
+        # for formatter in find_all_subclasses(SingleTimeFormatter):
+        for formatter in SingleTimeFormatter_priority_list:
             expression = formatter.format(expression)
         loop_flags = LoopFlagsGroup()
         loop_flag = loop_flags.new()
+
         while loop_flag:
             loop_flag.break_loop()
-            for formatter in find_all_subclasses(MultiTimeFormatter):
+            # for formatter in find_all_subclasses(MultiTimeFormatter):
+            for formatter in MultiTimeFormatter_priority_list:
                 new_expression = formatter.format(expression)
                 if new_expression != expression:
                     expression = new_expression
@@ -74,7 +78,7 @@ class AddShellBracket(SingleTimeFormatter):
 
     @classmethod
     def format(cls, expression: str) -> str:
-        expression = StripEquality.format(expression)
+        # expression = StripEquality.format(expression)
         if re.match(r"^\(.*\)$", expression):
             return expression
         return super().format(expression)
@@ -222,6 +226,30 @@ def test(_f: str = None, doc: bool = False):
 def test_log_with_docstring():
     _f = r".\test\FormatterTestWithDocLog.txt"
     test(_f, doc=True)
+
+
+SingleTimeFormatter_PTF = PriorityTreeForFormatters()
+SingleTimeFormatter_PTF.add_lower_priority("InfinityHigh", StripEquality)
+SingleTimeFormatter_PTF.add_lower_priority(StripEquality, [AddShellBracket,
+                                                           DecimalPointFormatter,
+                                                           ExponentFormatter,
+                                                           DivideFormatter,
+                                                           ModeOrPercentFormatter,
+                                                           ExclamationFormatter,
+                                                           NegativePositiveFormatter,
+                                                           LeftBracketMultipleFormatter,
+                                                           RightBracketMultipleFormatter,
+                                                           BracketMultiplierFormatter
+                                                           ])
+SingleTimeFormatter_priority_list = SingleTimeFormatter_PTF.get_priority_list()
+
+
+MultiTimeFormatter_PTF = PriorityTreeForFormatters()
+MultiTimeFormatter_PTF.add_lower_priority("InfinityHigh", [ConsecutiveSubtractFormatter,
+                                                           ConsecutivePlusFormatter,
+                                                           PlusMinusFormatter,
+                                                           MinusPlusFormatter])
+MultiTimeFormatter_priority_list = MultiTimeFormatter_PTF.get_priority_list()
 
 
 if __name__ == '__main__':
