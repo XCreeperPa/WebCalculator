@@ -245,10 +245,7 @@ SingleTimeFormatter_priority_list = SingleTimeFormatter_PTF.get_priority_list()
 
 
 MultiTimeFormatter_PTF = PriorityTreeForFormatters()
-MultiTimeFormatter_PTF.add_lower_priority("InfinityHigh", [ConsecutiveSubtractFormatter,
-                                                           ConsecutivePlusFormatter,
-                                                           PlusMinusFormatter,
-                                                           MinusPlusFormatter])
+MultiTimeFormatter_PTF.add_lower_priority("InfinityHigh", find_all_subclasses(MultiTimeFormatter))
 MultiTimeFormatter_priority_list = MultiTimeFormatter_PTF.get_priority_list()
 
 
