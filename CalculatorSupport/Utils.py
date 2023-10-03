@@ -13,6 +13,24 @@ def debug(func, func_args: (list, tuple) = None, func_kwargs: dict = None,
     return pysnooper.snoop(*snooper_args, **snooper_kwargs)(func)(*func_args, **func_kwargs)
 
 
+class FindHeadMatchingParentheses:
+    bracket = {"(": ")", "[": "]", "{": "}"}
+
+    def __init__(self, _str: str):
+        self.last_bracket_index: int | None = None
+        self.sub_str: str | None = None
+        stack = []
+        for i, _char in enumerate(_str):
+            if _char in self.bracket:
+                stack.append(_char)
+            elif _char in self.bracket.values() and self.bracket[stack[-1]] == _char:
+                stack.pop()
+                if len(stack) <= 0:
+                    self.last_bracket_index = i
+                    self.sub_str = _str[:i + 1]
+                    return
+
+
 def find_all_subclasses(cls) -> list:
     subclasses = list(cls.__subclasses__())
     for subclass in subclasses:

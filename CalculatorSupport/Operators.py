@@ -3,7 +3,7 @@ import re
 from typing import Callable
 
 from .Constants import NAN, INF
-from .StatementSet import *
+from .StatementSet import Statements
 
 
 class Operator:

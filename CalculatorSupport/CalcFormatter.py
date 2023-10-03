@@ -1,6 +1,7 @@
 import re
 
 from .LoopFlags import LoopFlagsGroup
+from .Operators import BinaryOperator
 from .Utils import *
 
 
@@ -158,12 +159,42 @@ class MinusPlusFormatter(MultiTimeFormatter):
     test_expected = ["1-1"]
 
 
-class NegativePositiveFormatter(SingleTimeFormatter):
+class BracketNegativePositiveFormatter(SingleTimeFormatter):
     """正负数处理/左括号后跟减号 '(-''[-''{-'，将减号替换为零减 '0-: (-1)==(0-1)'"""
     regex_list = [re.compile(r'([(\[{])([-+])')]
     replacement = r'\g<1>0\g<2>'
     test_input = ["(-1)", "(+1)"]
     test_expected = ["(0-1)", "(0+1)"]
+
+
+# after single time formatter
+class BinaryNegativePositiveFormatter(SingleTimeFormatter):
+    @classmethod
+    def format(cls, expression: str) -> str:
+        op_symbols = {regex.pattern for op in find_all_subclasses(BinaryOperator) for regex in op.full_match_re}
+        regex = re.compile(r"\^\.\+(.+)\.\+\$")
+        op_symbols = {regex.match(op_symbol).group(1) for op_symbol in op_symbols
+                      if regex.match(op_symbol) is not None}
+        regex = re.compile(fr"({'|'.join(op_symbols)})([+-]+[\d.]+)")
+        expression = regex.sub(r"\g<1>(0\g<2>)", expression)
+        regex = re.compile(fr"({'|'.join(op_symbols)})([+-]+)([(\[{{])")
+        matches = sorted(regex.finditer(expression), key=lambda m: m.end(), reverse=True)
+        last_match: re.Match | None = None
+        for match in matches:
+            if last_match is not None and match.start() < last_match.end():
+                last_match = match
+                continue
+            matched_parentheses = FindHeadMatchingParentheses(expression[match.end() - 1:])
+            sub_expression = f"(0{match.group(2)}{matched_parentheses.sub_str})"
+            expression = (f"{expression[:match.end(1)]}"
+                          f"{sub_expression}"
+                          f"{expression[match.end(1) + matched_parentheses.last_bracket_index + 2:]}")
+            last_match = match
+
+        return expression
+
+    test_input = ["1*-2", "1*-(2+3)", "1*-(2+(3-4)+5)^-1%+2"]
+    test_expected = ["1*(0-2)", "1*(0-(2+3))", "1*(0-(2+(3-4)+5))^(0-1)%(0+2)"]
 
 
 class LeftBracketMultipleFormatter(SingleTimeFormatter):
