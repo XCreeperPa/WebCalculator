@@ -1,5 +1,6 @@
 from .CalcFormatter import *
 
+
 class CalcFormatterOperatorPrecedence:
     pass
 
@@ -7,7 +8,6 @@ class CalcFormatterOperatorPrecedence:
 class PriorityTreeForFormatters:
     def __init__(self):
         self.graph = {"InfinityHigh": []}
-
 
     def add_lower_priority(self, existing_operator, new_operators):
         """为已存在的运算符添加优先级更低的新运算符。"""
@@ -49,5 +49,3 @@ class PriorityTreeForFormatters:
             for child in self.graph[node]:
                 stack.append(child)
         return result[1:]  # 排除 InfinityHigh
-
-
