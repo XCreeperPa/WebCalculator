@@ -9,6 +9,13 @@ def main():
     _io = log.create_string_io()
     _result = calc_main("(1+1-1)/0+1")
     print(log.read())
+    _result = calc_main("1+0/0+1")
+    print(log.read())
+
+
+def pre_test():
+    print(0.1 + 0.2)
+    print(calc_main("0.1+0.2"))
 
 
 def calc_main_user_test():
@@ -21,5 +28,6 @@ def calc_main_user_test():
 # print(calc_main("sin(1+1)"))
 # print(Utils.debug(calc_main, ("log2(1+1)",)))
 if __name__ == '__main__':
-    main()
+    # main()
+    pre_test()
     # calc_main_user_test()

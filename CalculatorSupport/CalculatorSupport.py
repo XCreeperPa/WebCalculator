@@ -1,8 +1,9 @@
 import decimal
 
 from .CalcFormatter import CalculateFormatter
+from .CalcTracker import calc_tracker
 from .Constants import *
-from .ExpressionInscriber import ExpressionInscriber
+from .ExpressionOperateInscriber import ExpressionOperateInscriber
 from .Logger import Logger
 from .LoopFlags import LoopFlagsGroup
 from .OperatorPrecedence import operator_precedence, OperatorPrecedence
@@ -38,17 +39,17 @@ def calc_main(expression: str, _format=True, _print=True):
     # 存储原表达式
     original_expression = expression
     log(expression)
-    record = ExpressionInscriber(original_expression)
+    record = ExpressionOperateInscriber(original_expression)
     # 初始化数字和操作符栈
-    expression_stack = ExpressionStack(original_expression)
-    nums = OperandStack(expression_stack)
-    ops = OperatorStack(expression_stack)
+    # expression_stack = ExpressionStack(original_expression)
+    nums = OperandStack()
+    ops = OperatorStack()
     # 获取所有的操作符类
     operators: list[type[Operator]] = find_all_subclasses(Operator)
 
-    loop_flag0 = loop_flags.new()
+    loop_flag0 = loop_flags.new("loop_flag0")
     while loop_flag0:  # 循环处理整个表达式
-        loop_flag1 = loop_flags.new()
+        loop_flag1 = loop_flags.new("loop_flag1")
         for operator in operators:  # 遍历所有的操作符
             match = operator.part_match(expression)  # 尝试匹配当前操作符
 
@@ -58,15 +59,16 @@ def calc_main(expression: str, _format=True, _print=True):
                 continue
 
             operands, expression = match  # 提取操作数和剩余的表达式
-            record(expression)
             if operands is not None:  # 矫正操作数格式
                 operands = [DefaultCalcType(operand) if not isinstance(operand, DefaultCalcType) else operand
                             for operand in operands]
+            match_operator: type[Operator] = operator  # for record 记录运算符
+            match_operands = operands  # for record 记录运算子
 
             if ops.is_empty():  # 如果操作符栈为空
                 ops.push(operator)  # 直接将操作符压入操作符栈
             else:  # 否则，需要根据优先级来决定如何处理操作符
-                loop_flag2 = loop_flags.new()
+                loop_flag2 = loop_flags.new("loop_flag2")
                 # 如果当前操作符的优先级小于或等于栈顶的操作符的优先级
                 while operator_precedence.get(operator) <= operator_precedence.get(ops.top_element()) and loop_flag2:
                     if operator is RightBracket:
@@ -85,7 +87,7 @@ def calc_main(expression: str, _format=True, _print=True):
                     if not isinstance(operands_type, (list, tuple)):
                         operands_type = [operands_type] * calc_args_count
                     _index = 0
-                    loop_flag3 = loop_flags.new()
+                    loop_flag3 = loop_flags.new("loop_flag3")
                     while _index < calc_args_count and loop_flag3:
                         # noinspection PyTypeHints
                         if not isinstance(calc_operand[_index], operands_type[_index]):
@@ -100,10 +102,16 @@ def calc_main(expression: str, _format=True, _print=True):
                             _seq = ", "
                             operator_log = f"{calc_operator.__name__}({_seq.join(map(str, calc_operand))})"
                             log(operator_log)
-                            log("^"*len(operator_log))
-                        log(original_expression + "\n" +
-                            "^" * len(record.get_former_differ_expression(0, record.size - 1)))
+                            log("^" * len(operator_log))
+                        else:
+                            operator_log = f"{calc_operator.__name__}"
+                            log(operator_log)
+                            log("^" * len(operator_log))
+                        # log(e.__repr__())
+                        import traceback
                         log(e.__repr__())
+                        # log(traceback.format_exc())
+                        calc_tracker(calc_operator, record, operator_precedence, log)
                         return e
 
                     if calc_args_count:
@@ -120,6 +128,10 @@ def calc_main(expression: str, _format=True, _print=True):
                 ops.push(operator)
                 if operands is not None:
                     nums.mul_push(*operands)
+            if match_operands is None:
+                record(expression, match_operator)
+            else:
+                record(expression, match_operator, match_operands)
             if loop_flag1.break_flag:
                 break
         loop_flag1.end()
@@ -129,7 +141,7 @@ def calc_main(expression: str, _format=True, _print=True):
         if match and not isinstance(match, bool):  # 如果成功提取了数字
             operands, expression = match  # 提取操作数和剩余的表达式
             nums.push(DefaultCalcType(operands))  # 将操作数压入数字栈
-            record(expression)
+            record(expression, operands=operands)
         if ops.is_empty():  # 如果操作符栈为空，说明表达式处理完成
             break
     loop_flag0.end()

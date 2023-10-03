@@ -1,17 +1,35 @@
 import difflib
 
+# from .Operators import Operator
+from .Operators import *  # for test
 
-class ExpressionInscriber:
+
+class ExpressionOperateInscriber:
+    class OperateUnit:
+        def __init__(self, operator, operands):
+            if operator is not None:
+                assert not issubclass(operator, (EmptyMark, EndMark))
+            self.operator = operator
+            self.operands = operands
+
+        def __str__(self):
+            return (f"operator: {self.operator.__name__ if self.operator is not None else None}, "
+                    f"operands: {self.operands if self.operands is not None else None}")
+
     def __init__(self, original_expression):
         self.original_expression = original_expression
         self.latest_expression = self.original_expression
         self.differ = difflib.Differ()
+        self.operate_log: list[ExpressionOperateInscriber.OperateUnit] = list()
         self.former_increase_differ_list: list[str] = list()
         # self.former_decrease_differ_list: list[str] = list()
         self.latter_increase_differ_list: list[str] = list()
         # self.latter_decrease_differ_list: list[str] = list()
 
-    def __call__(self, expression: str):
+    def __call__(self, expression: str, operator: type[Operator] = None, operands=None):
+        if not (operator == operands is None):
+            self.operate_log.append(self.OperateUnit(operator, operands))
+
         differ = list(self.differ.compare(expression, self.latest_expression))
 
         former_increase_differ_expression = str()
@@ -30,9 +48,11 @@ class ExpressionInscriber:
 
         self.latest_expression = expression
         return self
+
     @property
     def size(self):
         return len(self.former_increase_differ_list)
+
     def get_former_differ_expression(self, start_index: int, end_index: int = None) -> str:
         if end_index is None:
             return self.former_increase_differ_list[start_index]
@@ -44,9 +64,6 @@ class ExpressionInscriber:
             return self.latter_increase_differ_list[start_index]
         else:
             return "".join(self.latter_increase_differ_list[start_index:end_index])
-
-    def __getitem__(self, index):
-        pass
 
     def __str__(self):
         return self.original_expression

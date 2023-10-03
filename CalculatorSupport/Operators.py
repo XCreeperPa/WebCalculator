@@ -378,7 +378,7 @@ class LeftBracket(Bracket, Mark):
 
     @classmethod
     def execute(cls, _globals: dict, _locals: dict) -> None:
-        if _locals["loop_flag2"].state is False:
+        if _locals.get("loop_flag2") is None or _locals["loop_flag2"].state is False:
             return
         if _locals["operator"] is RightBracket:
             if _locals["ops"].is_empty():

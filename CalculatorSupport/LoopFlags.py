@@ -3,9 +3,11 @@ from .Stack import Stack
 
 class LoopFlagsGroup(Stack):
     class LoopFlag:
-        def __init__(self, group, state=True, name=None):
+        def __init__(self, group, name: str, state=True):
             self.state: bool = state
             self.group: LoopFlagsGroup = group
+            if name in [flag.name for flag in self.group.stack]:
+                raise ValueError(f"LoopFlag {name} already exists")
             self.name = name
 
         def __bool__(self):
@@ -36,7 +38,7 @@ class LoopFlagsGroup(Stack):
     def __init__(self):
         super().__init__()
 
-    def new(self, name=None) -> LoopFlag:
+    def new(self, name: str) -> LoopFlag:
         self.push(self.LoopFlag(group=self, name=name))
         return self.top_element()
 
@@ -53,7 +55,7 @@ class LoopFlagsGroup(Stack):
 
 def test():
     loop_flags = LoopFlagsGroup()
-    lf = loop_flags.new()
+    lf = loop_flags.new("1")
     if lf:
         print(lf.state)
     lf.state = False

@@ -19,7 +19,7 @@ class Logger:
         :return: None
         """
         if self._output:
-            self._output.write(message + "\n")
+            self._output.write(str(message) + "\n")
             self._output.flush()
         else:
             print(message)

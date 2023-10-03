@@ -1,6 +1,6 @@
 # import re
 # from .Operators import *
-# from .Stack import ExpressionStack
+from .Stack import ExpressionStack
 
 
 class CalcChecker:

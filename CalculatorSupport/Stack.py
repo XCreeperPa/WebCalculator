@@ -72,7 +72,8 @@ class CalcStack(Stack):
 
     def push(self, obj):
         super().push(obj)
-        self.expression_stack.push(self)
+        if self.expression_stack is not None:
+            self.expression_stack.push(self)
 
     def pop(self):
         _obj = super().pop()
@@ -106,7 +107,7 @@ class ExpressionStack(Stack):
         def get(self):
             return self.stack.stack[self.index]
 
-    def __init__(self,original_expression=None):
+    def __init__(self, original_expression=None):
         super().__init__()
         self.original_expression = original_expression
 
