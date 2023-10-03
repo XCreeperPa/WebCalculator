@@ -59,6 +59,15 @@ class Strip(RegexFormatter):
     replacement = r""
 
 
+class NegativeNumberAfterOperatorFormatter(SingleTimeFormatter):
+    """处理乘除后面跟负号的情况，例如：1*-2 -> 1*(-2)"""
+    regex_list = [re.compile(r"([*/])\s*-([0-9]+)")]
+    replacement = r"\g<1>(-\g<2>)"
+
+    test_input = ["1*-2", "2/-3", "3* -4", "4/ -5"]
+    test_expected = ["1*(-2)", "2/(-3)", "3*(-4)", "4/(-5)"]
+
+
 class StripEquality(SingleTimeFormatter, Strip):
     """移除表达式末位等号:\"1+1=\"==\"1+1\""""
     regex_list = [re.compile(r"=+$")]
