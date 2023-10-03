@@ -13,7 +13,6 @@ def calc_tracker(track_operator: type[Operator], record: ExpressionOperateInscri
     #     index -= 1
     # index -= 1
     while -index <= len(record.operate_log):
-        operate_unit = str(record.operate_log[index])
         operator = record.operate_log[index].operator
         if operator is not None:
             if issubclass(operator, Bracket) or bracket_count != 0:
