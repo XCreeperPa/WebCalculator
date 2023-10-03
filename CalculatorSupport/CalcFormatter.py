@@ -10,7 +10,7 @@ class CalculateFormatter:
         for formatter in find_all_subclasses(SingleTimeFormatter):
             expression = formatter.format(expression)
         loop_flags = LoopFlagsGroup()
-        loop_flag = loop_flags.new("loop_flag")
+        loop_flag = loop_flags.new()
         while loop_flag:
             loop_flag.break_loop()
             for formatter in find_all_subclasses(MultiTimeFormatter):

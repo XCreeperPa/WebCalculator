@@ -22,7 +22,7 @@
 <!-- 页面主标题 -->
 <h1><span class="special-character">☁</span>云计算器</h1>
 <!-- 计算器输入表单 -->
-<div class="container" id="input">
+<div class="input-container" id="input">
 <form id="calculatorForm">
 <!-- 用户输入的数学表达式 -->
 <input name="expression" placeholder="输入数学表达式" type="text"/>
@@ -33,47 +33,6 @@
 </div>
 <!-- 主容器，包含计算器的所有内容 -->
 <div class="container" id="main"></div>
-<!-- <script>
-        function addCard(data) {
-            var expression = document.querySelector('input[name="expression"]').value;
-            var correctedData = data.replace(/'/g, '"')
-            console.log(correctedData)
-            var data_json = JSON.parse(correctedData); // 解析 JSON 字符串
-
-            // 创建新的card-container
-            const newCardContainer = document.createElement('div');
-            newCardContainer.className = 'card-container';
-
-            // 创建新的card元素和其子元素
-            const newCard = document.createElement('div');
-            newCard.className = 'card';
-            
-            const faceExpression = document.createElement('p');
-            faceExpression.innerText = "表达式: " + expression;
-            
-            const faceResult = document.createElement('p');
-            faceResult.innerText = "结果: " + data_json.result;
-            
-            var button = document.createElement("button");
-            button.innerHTML = "折叠";
-            button.addEventListener("click", function() {
-                // 这里是点击按钮时要执行的代码
-                toggleLogs();  // 调用toggleLogs函数
-                });
-            const backLog = document.createElement('p');
-            backLog.innerText = '日志:' + "\n" + data_json.log;
-            
-            newCard.appendChild(faceExpression);
-            newCard.appendChild(faceResult);
-            newCard.appendChild(button)
-            newCard.appendChild(backLog);
-            
-            newCardContainer.appendChild(newCard); // 添加card到card-container
-
-            const container = document.querySelector('.container#main');
-            container.appendChild(newCardContainer);
-        }
-    </script> -->
 <script>
     function addCard(data) {
     var expression = document.querySelector('input[name="expression"]').value;
