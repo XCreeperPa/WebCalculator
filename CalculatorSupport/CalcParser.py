@@ -1,4 +1,3 @@
-# import re
 from typing import Generator
 
 from .Operators import *
@@ -6,6 +5,7 @@ from .RationalNumber import RationalNumber
 
 
 class CalcParser:
+    """仅用于提供数学表达式解析的实现方式, 不在calc_main中实际使用"""
     @staticmethod
     def generator_parser(expression: str, operators: list[type[Operator]]) -> \
             Generator[tuple[type[Operator] | None, str | None, str | None], None, None]:
