@@ -21,11 +21,17 @@ __license__ = "MIT"
 # sys.path.append(os.path.abspath(r"..\.."))
 # print(sys.path)
 
+from . import CalculatorSupport
 from . import Constants
 from . import OperatorPrecedence
 from . import Operators
 from . import RationalNumber
-from . import CalculatorSupport
 from .CalculatorSupport import calc_main, calc_format, log
 
-__all__ = ["calc_main", "calc_format", "Operators", "OperatorPrecedence", "RationalNumber", "Constants", "log"]
+__all__ = ["calc_main", "calc_format", "log",
+           "Operators",
+           "CalcParser",
+           "OperatorPrecedence",
+           "RationalNumber",
+           "Constants",
+           ]
