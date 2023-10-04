@@ -1,4 +1,5 @@
 import decimal
+import fractions
 
 from .CalcFormatter import CalculateFormatter
 from .CalcTracker import calc_tracker
@@ -18,7 +19,15 @@ decimal_context.prec = 30  # 设置全局精度(单位:小数点后的位数)
 Pi = PiApproximation()
 E = EulerNumber()
 
+Decimal = decimal.Decimal
+Fraction = fractions.Fraction
 DefaultCalcType: type = decimal.Decimal
+
+
+def set_DefaultCalcType(v: type):
+    global DefaultCalcType
+    DefaultCalcType = v
+
 
 operator_precedence = OperatorPrecedence(operator_precedence)  # 构造优先级
 log = Logger()

@@ -13,6 +13,12 @@ def main():
     print(log.read())
 
 
+def calc_fraction_test():
+    from CalculatorSupport import calc_main, set_DefaultCalcType, Fraction
+    set_DefaultCalcType(Fraction)
+    calc_main("1/2+1")
+
+
 def pre_test():
     print(0.1 + 0.2)
     print(calc_main("0.1+0.2"))
@@ -34,6 +40,7 @@ def calc_main_user_test():
 # print(Utils.debug(calc_main, ("log2(1+1)",)))
 if __name__ == '__main__':
     # main()
+    calc_fraction_test()
     # pre_test()
-    formatter_test()
+    # formatter_test()
     # calc_main_user_test()
