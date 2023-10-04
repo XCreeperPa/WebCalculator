@@ -3,15 +3,27 @@ from .Stack import Stack
 
 class LoopFlagsGroup(Stack):
     class LoopFlag:
-        def __init__(self, group, name: str, state=True):
+        def __init__(self, group, name: str, state=True, max_repeat: int = -1):
             self.state: bool = state
             self.group: LoopFlagsGroup = group
             if name in [flag.name for flag in self.group.stack]:
                 raise ValueError(f"LoopFlag {name} already exists")
             self.name = name
+            self.max_repeat = max_repeat
+            self.repeat_count: int = 0
+            self.over_repeat: bool = False
 
         def __bool__(self):
             return self.state
+
+        def repeat_once(self):
+            if 0 < self.max_repeat == self.repeat_count:
+                self.over_repeat = True
+                self.break_loop()
+            self.repeat_count += 1
+
+        def repeat_clear(self):
+            self.repeat_count = 0
 
         def end(self):
             self.state = False

@@ -60,15 +60,16 @@ def calc_main(expression: str, _format=True, _print=True, repeat_times: int = 3)
     operators: list[type[Operator]] = find_all_subclasses(Operator)
 
     repeat_count = 0  # 防止死循环
+    over_repeat: Exception | None = None  # loop over repeat flag
     loop_flag0 = loop_flags.new("loop_flag0")
     while loop_flag0:  # 循环处理整个表达式
         if repeat_count > repeat_times:
             operate_log = f"{record.get_former_differ_expression(0, record.size)}"
             log(original_expression)
             log("~" * len(operate_log) + "^" * (len(original_expression) - len(operate_log)))
-            e = SyntaxError("语法错误: 无法识别")
-            log(e.__repr__())
-            return
+            over_repeat = SyntaxError("语法错误: 无法识别")
+            loop_flags.break_all()
+            break
         loop_flag1 = loop_flags.new("loop_flag1")
         for operator in operators:  # 遍历所有的操作符
             match = operator.part_match(expression)  # 尝试匹配当前操作符
@@ -110,6 +111,13 @@ def calc_main(expression: str, _format=True, _print=True, repeat_times: int = 3)
                     _index = 0
                     loop_flag3 = loop_flags.new("loop_flag3")
                     while _index < calc_args_count and loop_flag3:
+                        if _index >= len(calc_operand) or _index >= len(operands_type):
+                            operate_log = f"{record.get_former_differ_expression(0, record.size)}"
+                            log(original_expression)
+                            log("~" * len(operate_log) + "^" * (len(original_expression) - len(operate_log)))
+                            over_repeat = SyntaxError("语法错误: 无法识别")
+                            loop_flags.break_all()
+                            break
                         # noinspection PyTypeHints
                         if not isinstance(calc_operand[_index], operands_type[_index]):
                             calc_operand[_index] = operands_type[_index](calc_operand[_index])
@@ -173,6 +181,12 @@ def calc_main(expression: str, _format=True, _print=True, repeat_times: int = 3)
     # else:
     #     return [nums.top_element()]
     # 返回结果
+    if over_repeat:
+        # operate_log = f"{record.get_former_differ_expression(0, record.size)}"
+        # log(original_expression)
+        # log("~" * len(operate_log) + "^" * (len(original_expression) - len(operate_log)))
+        log(over_repeat.__repr__())
+        return
     if nums.size() == 1:
         log(f"output:{nums.top_element()}")
         return str(nums.top_element())

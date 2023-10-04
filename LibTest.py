@@ -26,7 +26,7 @@ def pre_test():
 
 def formatter_test():
     from CalculatorSupport import CalcFormatter
-    CalcFormatter.test_log_with_docstring()
+    CalcFormatter.test_log_with_docstring(_f=None)
 
 
 def calc_main_user_test():
@@ -40,7 +40,7 @@ def calc_main_user_test():
 # print(Utils.debug(calc_main, ("log2(1+1)",)))
 if __name__ == '__main__':
     # main()
-    calc_fraction_test()
+    # calc_fraction_test()
     # pre_test()
     # formatter_test()
-    # calc_main_user_test()
+    calc_main_user_test()
