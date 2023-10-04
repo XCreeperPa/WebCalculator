@@ -259,8 +259,10 @@ def test(_f: str = None, doc: bool = False):
     close_log()
 
 
-def test_log_with_docstring():
-    _f = r".\test\FormatterTestWithDocLog.txt"
+def test_log_with_docstring(_f=r".\test\FormatterTestWithDocLog.txt"):
+    import os
+    if _f is not None and not os.path.exists(os.path.abspath(fr"{_f}\..")):
+        os.makedirs(os.path.abspath(fr"{_f}\.."))
     test(_f, doc=True)
 
 

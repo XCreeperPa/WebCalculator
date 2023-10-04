@@ -24,7 +24,7 @@ operator_precedence = OperatorPrecedence(operator_precedence)  # 构造优先级
 log = Logger()
 
 
-def calc_main(expression: str, _format=True, _print=True):
+def calc_main(expression: str, _format=True, _print=True, repeat_times: int = 3):
     """主处理函数"""
 
     def set_operator(_v: type[Operator]):
@@ -47,8 +47,15 @@ def calc_main(expression: str, _format=True, _print=True):
     # 获取所有的操作符类
     operators: list[type[Operator]] = find_all_subclasses(Operator)
 
+    repeat_count = 0  # 防止死循环
     loop_flag0 = loop_flags.new("loop_flag0")
     while loop_flag0:  # 循环处理整个表达式
+        if repeat_count > repeat_times:
+            operate_log = f"{record.get_former_differ_expression(0, record.size)}"
+            log(original_expression)
+            log("~" * len(operate_log) + "^" * (len(original_expression) - len(operate_log)))
+            log(SyntaxError("语法错误: 无法识别"))
+            return
         loop_flag1 = loop_flags.new("loop_flag1")
         for operator in operators:  # 遍历所有的操作符
             match = operator.part_match(expression)  # 尝试匹配当前操作符
@@ -58,6 +65,7 @@ def calc_main(expression: str, _format=True, _print=True):
             if not match:  # 匹配失败
                 continue
 
+            repeat_count = 0
             operands, expression = match  # 提取操作数和剩余的表达式
             if operands is not None:  # 矫正操作数格式
                 operands = [DefaultCalcType(operand) if not isinstance(operand, DefaultCalcType) else operand
@@ -108,7 +116,6 @@ def calc_main(expression: str, _format=True, _print=True):
                             log(operator_log)
                             log("^" * len(operator_log))
                         # log(e.__repr__())
-                        import traceback
                         log(e.__repr__())
                         # log(traceback.format_exc())
                         calc_tracker(calc_operator, record, operator_precedence, log)
@@ -135,10 +142,12 @@ def calc_main(expression: str, _format=True, _print=True):
             if loop_flag1.break_flag:
                 break
         loop_flag1.end()
+        repeat_count += 1
 
         # 提取数字
         match = RationalNumber.parse_digits_part(expression)  # 尝试从表达式中提取数字
         if match and not isinstance(match, bool):  # 如果成功提取了数字
+            repeat_count = 0
             operands, expression = match  # 提取操作数和剩余的表达式
             nums.push(DefaultCalcType(operands))  # 将操作数压入数字栈
             record(expression, operands=operands)
@@ -151,7 +160,6 @@ def calc_main(expression: str, _format=True, _print=True):
     # else:
     #     return [nums.top_element()]
     # 返回结果
-    print(record.former_increase_differ_list)
     if nums.size() == 1:
         log(f"output:{nums.top_element()}")
         return str(nums.top_element())

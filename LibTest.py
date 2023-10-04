@@ -18,9 +18,9 @@ def pre_test():
     print(calc_main("0.1+0.2"))
 
 
-def formatter_positive_negative_test():
+def formatter_test():
     from CalculatorSupport import CalcFormatter
-    CalcFormatter.BinaryNegativePositiveFormatter.test()
+    CalcFormatter.test_log_with_docstring()
 
 
 def calc_main_user_test():
@@ -35,5 +35,5 @@ def calc_main_user_test():
 if __name__ == '__main__':
     # main()
     # pre_test()
-    formatter_positive_negative_test()
-    # calc_main_user_test()
+    # formatter_test()
+    calc_main_user_test()
