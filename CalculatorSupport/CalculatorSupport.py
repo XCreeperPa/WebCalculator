@@ -36,6 +36,9 @@ def calc_main(expression: str, _format=True, _print=True, repeat_times: int = 3)
     if _format:
         expression = calc_format(expression=expression)
 
+    if not len(expression):
+        return 0
+
     # 存储原表达式
     original_expression = expression
     log(expression)

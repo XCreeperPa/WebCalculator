@@ -35,5 +35,5 @@ def calc_main_user_test():
 if __name__ == '__main__':
     # main()
     # pre_test()
-    # formatter_test()
-    calc_main_user_test()
+    formatter_test()
+    # calc_main_user_test()

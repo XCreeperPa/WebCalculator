@@ -68,6 +68,13 @@ class NegativeNumberAfterOperatorFormatter(SingleTimeFormatter):
     test_expected = ["1*(-2)", "2/(-3)", "3*(-4)", "4/(-5)"]
 
 
+class StripSpace(SingleTimeFormatter, Strip):
+    """移除空白字符"""
+    regex_list = [re.compile(r"\s+")]
+    test_input = ["1 + 1"]
+    test_expected = ["1+1"]
+
+
 class StripEquality(SingleTimeFormatter, Strip):
     """移除表达式末位等号:\"1+1=\"==\"1+1\""""
     regex_list = [re.compile(r"=+$")]
@@ -251,7 +258,7 @@ def test(_f: str = None, doc: bool = False):
     for formatter in (find_all_subclasses(SingleTimeFormatter) + find_all_subclasses(MultiTimeFormatter)):
         formatter: CalculateFormatter
         print(formatter.__name__)
-        if doc and len(formatter.__doc__.strip()):
+        if doc and formatter.__doc__ is not None and len(formatter.__doc__.strip()):
             print(formatter.__doc__.strip())
         formatter.test()
         time.sleep(sleep_time)
