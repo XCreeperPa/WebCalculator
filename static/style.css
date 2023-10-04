@@ -19,23 +19,6 @@ body {
     color: #555;
 }
 
-/* Calculator styles */
-h1 {
-    font-size: 64px;
-    font-weight: 300;
-    text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    color: #fff;
-    text-align: center;
-    width: 100%;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-.special-character {
-    color: #fff;
-    font-size: 100px;
-    vertical-align: -20px;
-}
-
 input[type="text"] {
     padding: 10px 0;
     border: none;
@@ -128,3 +111,19 @@ input[type="submit"] {
     width: 70px;  /* Adjusted width */
 }
 
+/* Calculator styles */
+h1 {
+    font-size: 64px;
+    font-weight: 300;
+    text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    color: #fff;
+    text-align: center;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.special-character {
+    color: #fff;
+    font-size: 100px;
+    vertical-align: -20px;
+}

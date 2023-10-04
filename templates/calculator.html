@@ -36,8 +36,7 @@
 <script>
     function addCard(data) {
     var expression = document.querySelector('input[name="expression"]').value;
-    var correctedData = data.replace(/'/g, '"');
-    var data_json = JSON.parse(correctedData); // 解析 JSON 字符串
+    var data_json = JSON.parse(data); // 解析 JSON 字符串
 
     // 创建新的card-container
     const newCardContainer = document.createElement('div');
