@@ -54,7 +54,8 @@ def calc_main(expression: str, _format=True, _print=True, repeat_times: int = 3)
             operate_log = f"{record.get_former_differ_expression(0, record.size)}"
             log(original_expression)
             log("~" * len(operate_log) + "^" * (len(original_expression) - len(operate_log)))
-            log(SyntaxError("语法错误: 无法识别"))
+            e = SyntaxError("语法错误: 无法识别")
+            log(e.__repr__())
             return
         loop_flag1 = loop_flags.new("loop_flag1")
         for operator in operators:  # 遍历所有的操作符
