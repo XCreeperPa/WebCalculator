@@ -108,6 +108,7 @@ class Division(BinaryOperator):
 class Power(BinaryOperator):
     full_match_re = [re.compile(r"^.+\^.+$")]
     part_match_re = [re.compile(r"^\^(.+)")]
+    operands_type = float
 
     @staticmethod
     def calculate(v1, v2) -> object:

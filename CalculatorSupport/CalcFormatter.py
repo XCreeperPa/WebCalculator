@@ -89,16 +89,16 @@ class AddShellBracket(SingleTimeFormatter):
     test_input = ["1+1", "(1+1)", "1+(1)"]
     test_expected = ["(1+1)", "(1+1)", "(1+(1))"]
 
-    @classmethod
-    def format(cls, expression: str) -> str:
-        expression = StripEquality.format(expression)
-        try:
-            matched_parentheses = FindHeadMatchingParentheses(expression)
-        except Exception:
-            return super().format(expression)
-        if matched_parentheses.last_bracket_index and matched_parentheses.last_bracket_index + 1 == len(expression):
-            return expression
-        return super().format(expression)
+    # @classmethod
+    # def format(cls, expression: str) -> str:
+    #     expression = StripEquality.format(expression)
+    #     try:
+    #         matched_parentheses = FindHeadMatchingParentheses(expression)
+    #     except Exception:
+    #         return super().format(expression)
+    #     if matched_parentheses.sub_str is not None and matched_parentheses.sub_str == expression:
+    #         return expression
+    #     return super().format(expression)
 
 
 class DecimalPointFormatter(SingleTimeFormatter):

@@ -1,6 +1,6 @@
 # from CalculatorSupportBeta import calc_main
 
-from CalculatorSupport import calc_main, log
+from CalculatorSupport import calc_main, log, CalcType
 
 
 # @pysnooper.snoop(depth=2)
@@ -43,6 +43,7 @@ def calc_main_user_test():
 # print(calc_main("sin(1+1)"))
 # print(Utils.debug(calc_main, ("log2(1+1)",)))
 if __name__ == '__main__':
+    CalcType.set_fraction()
     # main()
     # calc
     # _fraction_test()
