@@ -19,14 +19,34 @@ decimal_context.prec = 30  # 设置全局精度(单位:小数点后的位数)
 Pi = PiApproximation()
 E = EulerNumber()
 
-Decimal = decimal.Decimal
-Fraction = fractions.Fraction
-DefaultCalcType: type = decimal.Decimal
 
+# Decimal = decimal.Decimal
+# Fraction = fractions.Fraction
+# DefaultCalcType: type = decimal.Decimal
+#
+#
+# def set_DefaultCalcType(v: type):
+#     global DefaultCalcType
+#     DefaultCalcType = v
+class CalcType:
+    Decimal = decimal.Decimal
+    Fraction = fractions.Fraction
+    calc_type = Decimal
 
-def set_DefaultCalcType(v: type):
-    global DefaultCalcType
-    DefaultCalcType = v
+    @classmethod
+    def set_calc_type(cls, v: type):
+        cls.calc_type = v
+
+    @classmethod
+    def set_decimal(cls):
+        cls.set_calc_type(cls.Decimal)
+
+    @classmethod
+    def set_fraction(cls):
+        cls.set_calc_type(cls.Fraction)
+
+    def __new__(cls, *args, **kwargs):
+        return cls.calc_type(*args, **kwargs)
 
 
 operator_precedence = OperatorPrecedence(operator_precedence)  # 构造优先级
@@ -82,7 +102,7 @@ def calc_main(expression: str, _format=True, _print=True, repeat_times: int = 3)
             repeat_count = 0
             operands, expression = match  # 提取操作数和剩余的表达式
             if operands is not None:  # 矫正操作数格式
-                operands = [DefaultCalcType(operand) if not isinstance(operand, DefaultCalcType) else operand
+                operands = [CalcType(operand) if not isinstance(operand, CalcType) else operand
                             for operand in operands]
             match_operator: type[Operator] = operator  # for record 记录运算符
             match_operands = operands  # for record 记录运算子
@@ -93,8 +113,6 @@ def calc_main(expression: str, _format=True, _print=True, repeat_times: int = 3)
                 loop_flag2 = loop_flags.new("loop_flag2")
                 # 如果当前操作符的优先级小于或等于栈顶的操作符的优先级
                 while operator_precedence.get(operator) <= operator_precedence.get(ops.top_element()) and loop_flag2:
-                    if operator is RightBracket:
-                        pass
                     calc_operator: type[Operator] = ops.pop()  # 弹出栈顶的操作符
 
                     # if issubclass(calc_operator, Mark) and calc_operator.execute is not None:
@@ -170,7 +188,7 @@ def calc_main(expression: str, _format=True, _print=True, repeat_times: int = 3)
         if match and not isinstance(match, bool):  # 如果成功提取了数字
             repeat_count = 0
             operands, expression = match  # 提取操作数和剩余的表达式
-            nums.push(DefaultCalcType(operands))  # 将操作数压入数字栈
+            nums.push(CalcType(operands))  # 将操作数压入数字栈
             record(expression, operands=operands)
         if ops.is_empty():  # 如果操作符栈为空，说明表达式处理完成
             break

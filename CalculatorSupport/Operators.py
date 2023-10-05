@@ -373,8 +373,8 @@ class Bracket(FunctionalOperator):
 
 
 class LeftBracket(Bracket, Mark):
-    full_match_re = [re.compile(r"^.*\(.*\).*$")]
-    part_match_re = [re.compile(r"^\((.*\).*)")]
+    full_match_re = [re.compile(r"^.*\(.*\).*$"), re.compile(r"^.*\[.*].*$"), re.compile(r"^.*\{.*}.*$")]
+    part_match_re = [re.compile(r"^\((.*\).*)"), re.compile(r"^\[(.*].*)"), re.compile(r"^\{(.*}.*)")]
 
     @classmethod
     def execute(cls, _globals: dict, _locals: dict) -> None:
@@ -396,8 +396,8 @@ class LeftBracket(Bracket, Mark):
 
 
 class RightBracket(Bracket):
-    full_match_re = [re.compile(r"^.*\(.*\).*$")]
-    part_match_re = [re.compile(r"^\)(.*)")]
+    full_match_re = [re.compile(r"^.*\(.*\).*$"), re.compile(r"^.*\[.*].*$"), re.compile(r"^.*\{.*}.*$")]
+    part_match_re = [re.compile(r"^\)(.*)"), re.compile(r"^](.*)"), re.compile(r"^}(.*)")]
     calc_args_count = 0
 
     @staticmethod

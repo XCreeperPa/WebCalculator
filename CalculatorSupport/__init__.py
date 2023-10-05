@@ -27,11 +27,13 @@ from . import OperatorPrecedence
 from . import Operators
 from . import RationalNumber
 from .CalculatorSupport import (calc_main, calc_format,
-                                set_DefaultCalcType, Decimal, decimal_context, Fraction,
+                                CalcType, decimal_context,
                                 log
                                 )
 
-__all__ = ["calc_main", "calc_format", "set_DefaultCalcType", "Decimal", "Fraction", "log",
+# set_DefaultCalcType, Decimal, decimal_context, Fraction,
+
+__all__ = ["calc_main", "calc_format", "CalcType", "log",
            "Operators",
            "CalcParser",
            "OperatorPrecedence",

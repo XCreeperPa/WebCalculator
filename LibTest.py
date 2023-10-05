@@ -7,16 +7,18 @@ from CalculatorSupport import calc_main, log
 # @pysnooper.snoop(os.path.abspath(r".\log.log"), depth=2)
 def main():
     _io = log.create_string_io()
-    _result = calc_main("(1+1-1)/0+1")
-    print(log.read())
-    _result = calc_main("1+0/0+1")
+    # _result = calc_main("(1+1-1)/0+1")
+    # print(log.read())
+    # _result = calc_main("1+0/0+1")
+    # print(log.read())
+    _result = calc_main("()(1/0)")
     print(log.read())
 
 
-def calc_fraction_test():
-    from CalculatorSupport import calc_main, set_DefaultCalcType, Fraction
-    set_DefaultCalcType(Fraction)
-    calc_main("1/2+1")
+# def calc_fraction_test():
+#     from CalculatorSupport import calc_main, set_DefaultCalcType, Fraction
+#     set_DefaultCalcType(Fraction)
+#     calc_main("1/2+1")
 
 
 def pre_test():
@@ -30,8 +32,10 @@ def formatter_test():
 
 
 def calc_main_user_test():
+    log.create_string_io()
     while True:
         calc_main(input("(Calc)>> "))
+        print(log.read())
 
 
 # print(main())
@@ -40,7 +44,8 @@ def calc_main_user_test():
 # print(Utils.debug(calc_main, ("log2(1+1)",)))
 if __name__ == '__main__':
     # main()
-    # calc_fraction_test()
+    # calc
+    # _fraction_test()
     # pre_test()
     # formatter_test()
     calc_main_user_test()

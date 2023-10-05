@@ -92,7 +92,8 @@ class AddShellBracket(SingleTimeFormatter):
     @classmethod
     def format(cls, expression: str) -> str:
         expression = StripEquality.format(expression)
-        if re.match(r"^\(.*\)$", expression):
+        matched_parentheses = FindHeadMatchingParentheses(expression)
+        if matched_parentheses.last_bracket_index and matched_parentheses.last_bracket_index + 1 == len(expression):
             return expression
         return super().format(expression)
 
