@@ -13,6 +13,25 @@ def updated_index():
     return render_template('calculator.html')
 
 
+@app.route('/user-manual')
+def updated_UserManual():
+    # 使用 Flask 的 render_template 函数从 "documentation.html" 文件中加载 HTML 内容
+    return render_template('user-manual.html')
+
+
+@app.route('/get-user-manual')
+def get_UserManual():
+    docs_dir = os.path.join(app.static_folder, "user-manual")
+    all_files = [f for f in os.listdir(docs_dir) if f.endswith('.html')]
+
+    # 将index.html移动到列表的第一个位置
+    if "index.html" in all_files:
+        all_files.remove("index.html")
+        all_files.insert(0, "index.html")
+
+    return jsonify(all_files)
+
+
 @app.route('/documentation')
 def updated_documentation():
     # 使用 Flask 的 render_template 函数从 "documentation.html" 文件中加载 HTML 内容
