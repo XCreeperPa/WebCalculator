@@ -6,6 +6,7 @@
 <!-- 头部区域开始，包含页面的元数据 -->
 <head>
 <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet"/>
+<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 <!-- 声明字符编码为UTF-8 -->
 <meta charset="utf-8"/>
 <!-- 设置页面的视口属性 -->
@@ -15,7 +16,7 @@
 <!-- 设置浏览器兼容性 -->
 <meta content="IE=edge" http-equiv="X-UA-Compatible">
 <!-- 导入外部CSS样式表 -->
-</meta></head>
+</head>
 <!-- 主体区域开始，包含页面的内容 -->
 <body>
 <div class="container">
@@ -25,9 +26,9 @@
 <div class="input-container" id="input">
 <form id="calculatorForm">
 <!-- 用户输入的数学表达式 -->
-<input name="expression" placeholder="输入数学表达式" type="text"/>
+<input name="expression" placeholder="输入数学表达式 按下回车开始计算" type="text"/>
 <!-- 提交按钮 -->
-<input type="submit" value="计算"/>
+<!-- <input type="submit" value="计算"/> -->
 </form>
 </div>
 </div>
@@ -84,7 +85,8 @@
     newCardContainer.appendChild(newCard); // 添加card到card-container
 
     const container = document.querySelector('.container#main');
-    container.appendChild(newCardContainer);
+    container.insertBefore(newCardContainer, container.firstChild); // 添加newCardContainer到container所有元素的前面
+
 }
 </script>
 <script>
