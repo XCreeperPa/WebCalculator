@@ -38,13 +38,13 @@ def calc_main_user_test():
         print(log.read())
 
 
-# print(main())
+# print(cards())
 # print(calc_main("sin(1)"))
 # print(calc_main("sin(1+1)"))
 # print(Utils.debug(calc_main, ("log2(1+1)",)))
 if __name__ == '__main__':
     CalcType.set_fraction()
-    # main()
+    # cards()
     # calc
     # _fraction_test()
     # pre_test()
