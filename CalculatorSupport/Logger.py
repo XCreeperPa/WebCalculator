@@ -74,7 +74,7 @@ class Logger:
         :return: None
         """
         message = self.MESSAGE_TYPE(str(message) + end, tag=tag)
-        if self._output:
+        if self._output is not None:
             self._output.write(message)
             self._output.flush()
         else:
@@ -195,6 +195,36 @@ class Logger:
         self.log(message)
 
 
+class CustomLogIO(list):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.position = 0
+
+    def write(self, message):
+        self.append(message)
+
+    def flush(self):
+        pass
+
+    def __call__(self, message):
+        self.write(message)
+
+    def read(self):
+        position = self.position
+        self.position = len(self)
+        return "".join(self[position:])
+
+    def readline(self):
+        position = self.position
+        self.position += 1
+        return self[position]
+
+    def readlines(self):
+        position = self.position
+        self.position = len(self)
+        return self[position:]
+
+
 def test():
     log = Logger()
     log.create_string_io()
@@ -223,5 +253,16 @@ def test():
     print(f"debug: {log.debug_output.read()}")
 
 
-if __name__ == '__main__':
-    test()
+def test2():
+    log = Logger()
+    log.setIO(CustomLogIO())
+    log("line1")
+    log.log("line2")
+    log.log_info("line: info")
+    log.log_warning("line: warning")
+    log.log_calc_error("line: calc_error")
+    log.log_python_error("line: python_error")
+    log.log_debug("line: debug")
+    for line in log.currentIO().readlines():
+        line: Message
+        print(line, line.tag)
