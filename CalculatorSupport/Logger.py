@@ -1,7 +1,48 @@
 import io
+from typing import Callable
 
 
+class Message(str):
+    INFO = 0
+    WARNING = 1
+    CALC_ERROR = 2
+    PYTHON_ERROR = 3
+    DEBUG = -1
+
+    DEFAULT = INFO
+
+    def __init__(self, _object, tag: (INFO, WARNING, CALC_ERROR, PYTHON_ERROR, DEBUG) = DEFAULT):
+        super().__init__()
+        self.tag: (Message.INFO, Message.WARNING, Message.CALC_ERROR, Message.PYTHON_ERROR, Message.DEBUG) = tag
+
+    def __new__(cls, _object, *args, **kwargs):
+        return str.__new__(cls, _object)
+
+    def is_INFO(self):
+        return self.tag == Message.INFO
+
+    def is_WARNING(self):
+        return self.tag == Message.WARNING
+
+    def is_CALC_ERROR(self):
+        return self.tag == Message.CALC_ERROR
+
+    def is_PYTHON_ERROR(self):
+        return self.tag == Message.PYTHON_ERROR
+
+    def is_DEBUG(self):
+        return self.tag == Message.DEBUG
+
+    # @property
+    # def __class__(self):
+    #     return super().__class__
+
+
+# noinspection GrazieInspection
 class Logger:
+    MESSAGE_TYPE = Message
+    DEFAULT_LOG_FUNCTION: Callable = lambda *args, **kwargs: print(*args, **kwargs)
+
     def __init__(self, output=None):
         """
         初始化 SimpleLogger 类
@@ -9,20 +50,80 @@ class Logger:
         :param output: 输出流对象，如文件对象。如果为 None，则默认使用 print 输出
         """
         self._output: io.IOBase | None = output
+        self.info_output: io.IOBase | None = None
+        self.warning_output: io.IOBase | None = None
+        self.calc_error_output: io.IOBase | None = None
+        self.python_error_output: io.IOBase | None = None
+        self.debug_output: io.IOBase | None = None
+
         self.position: int = 0
 
-    def log(self, message):
+    def log(self, message,
+            tag: (Message.INFO,
+                  Message.WARNING,
+                  Message.CALC_ERROR,
+                  Message.PYTHON_ERROR,
+                  Message.DEBUG) = Message.DEFAULT,
+            end: str = "\n"):
         """
         记录日志消息
 
         :param message: 要记录的消息
+        :param tag: 日志级别
+        :param end: 换行符
         :return: None
         """
+        message = self.MESSAGE_TYPE(str(message) + end, tag=tag)
         if self._output:
-            self._output.write(str(message) + "\n")
+            self._output.write(message)
             self._output.flush()
         else:
-            print(message)
+            self.DEFAULT_LOG_FUNCTION(message)
+        if self.info_output is not None and message.is_INFO():
+            self.info_output.write(message)
+            self.info_output.flush()
+        if self.warning_output is not None and message.is_WARNING():
+            self.warning_output.write(message)
+            self.warning_output.flush()
+        if self.calc_error_output is not None and message.is_CALC_ERROR():
+            self.calc_error_output.write(message)
+            self.calc_error_output.flush()
+        if self.python_error_output is not None and message.is_PYTHON_ERROR():
+            self.python_error_output.write(message)
+            self.python_error_output.flush()
+        if self.debug_output is not None and message.is_DEBUG():
+            self.debug_output.write(message)
+            self.debug_output.flush()
+
+    def log_info(self, message):
+        """
+        记录INFO日志消息
+        """
+        self.log(message, tag=Message.INFO)
+
+    def log_warning(self, message):
+        """
+        记录WARNING日志消息
+        """
+        self.log(message, tag=Message.WARNING)
+
+    def log_calc_error(self, message):
+        """
+        记录CALC_ERROR日志消息
+        """
+        self.log(message, tag=Message.CALC_ERROR)
+
+    def log_python_error(self, message):
+        """
+        记录PYTHON_ERROR日志消息
+        """
+        self.log(message, tag=Message.PYTHON_ERROR)
+
+    def log_debug(self, message):
+        """
+        记录DEBUG日志消息
+        """
+        self.log(message, tag=Message.DEBUG)
 
     def setIO(self, output=None):
         """
@@ -48,7 +149,6 @@ class Logger:
         :return: io.StringIO
         """
         _io = io.StringIO()
-        # _io.write("test")
         self.setIO(_io)
         return _io
 
@@ -93,3 +193,35 @@ class Logger:
         :return: None
         """
         self.log(message)
+
+
+def test():
+    log = Logger()
+    log.create_string_io()
+    log.info_output = io.StringIO()
+    log.warning_output = io.StringIO()
+    log.calc_error_output = io.StringIO()
+    log.python_error_output = io.StringIO()
+    log.debug_output = io.StringIO()
+    log("line1")
+    log.log("line2")
+    log.log_info("line: info")
+    log.log_warning("line: warning")
+    log.log_calc_error("line: calc_error")
+    log.log_python_error("line: python_error")
+    log.log_debug("line: debug")
+    print(f"log: {log.read()}")
+    log.info_output.seek(0)
+    print(f"info: {log.info_output.read()}")
+    log.warning_output.seek(0)
+    print(f"warning: {log.warning_output.read()}")
+    log.calc_error_output.seek(0)
+    print(f"calc_error: {log.calc_error_output.read()}")
+    log.python_error_output.seek(0)
+    print(f"python_error: {log.python_error_output.read()}")
+    log.debug_output.seek(0)
+    print(f"debug: {log.debug_output.read()}")
+
+
+if __name__ == '__main__':
+    test()

@@ -26,9 +26,9 @@ def calc_tracker(track_operator: type[Operator], record: ExpressionOperateInscri
                 break
         index -= 1
     former_skip: int = len(record.get_former_differ_expression(0, record.size + index + 1))
-    latter_skip: int = len(record.original_expression) - (record.size + 1)
-    log(record.original_expression)
-    log(
+    latter_skip: int = len(record.original_expression) - record.size
+    log.log_calc_error(record.original_expression)
+    log.log_calc_error(
         "~" * former_skip +
         "^" * len(record.get_former_differ_expression(record.size + index, record.size - 1)) +
         "~" * latter_skip

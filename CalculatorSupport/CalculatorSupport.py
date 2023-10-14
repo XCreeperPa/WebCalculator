@@ -5,7 +5,7 @@ from .CalcFormatter import CalculateFormatter
 from .CalcTracker import calc_tracker
 from .Constants import *
 from .ExpressionOperateInscriber import ExpressionOperateInscriber
-from .Logger import Logger
+from .Logger import Logger, Message
 from .LoopFlags import LoopFlagsGroup
 from .OperatorPrecedence import operator_precedence, OperatorPrecedence
 from .Operators import *
@@ -63,7 +63,10 @@ def calc_main(expression: str, _format=True, _print=True, repeat_times: int = 3)
     loop_flags.clear()
     # 格式化输入字符串，并根据需要更新返回值
     if _format:
-        expression = calc_format(expression=expression)
+        try:
+            expression = calc_format(expression=expression)
+        except Exception as e:
+            log.log_python_error(e)
 
     if not len(expression):
         return 0
@@ -85,8 +88,8 @@ def calc_main(expression: str, _format=True, _print=True, repeat_times: int = 3)
     while loop_flag0:  # 循环处理整个表达式
         if repeat_count > repeat_times:
             operate_log = f"{record.get_former_differ_expression(0, record.size)}"
-            log(original_expression)
-            log("~" * len(operate_log) + "^" * (len(original_expression) - len(operate_log)))
+            log.log_calc_error(original_expression)
+            log.log_calc_error("~" * len(operate_log) + "^" * (len(original_expression) - len(operate_log)))
             over_repeat = SyntaxError("语法错误: 无法识别")
             loop_flags.break_all()
             break
@@ -131,8 +134,8 @@ def calc_main(expression: str, _format=True, _print=True, repeat_times: int = 3)
                     while _index < calc_args_count and loop_flag3:
                         if _index >= len(calc_operand) or _index >= len(operands_type):
                             operate_log = f"{record.get_former_differ_expression(0, record.size)}"
-                            log(original_expression)
-                            log("~" * len(operate_log) + "^" * (len(original_expression) - len(operate_log)))
+                            log.log_calc_error(original_expression)
+                            log.log_calc_error("~" * len(operate_log) + "^" * (len(original_expression) - len(operate_log)))
                             over_repeat = SyntaxError("语法错误: 无法识别")
                             loop_flags.break_all()
                             break
@@ -146,23 +149,21 @@ def calc_main(expression: str, _format=True, _print=True, repeat_times: int = 3)
                         product = calc_operator.calculate(*calc_operand)  # 执行计算
                     except Exception as e:
                         if calc_args_count:
-                            _seq = ", "
-                            operator_log = f"{calc_operator.__name__}({_seq.join(map(str, calc_operand))})"
-                            log(operator_log)
-                            log("^" * len(operator_log))
+                            operator_log = f"{calc_operator.__name__}({', '.join(map(str, calc_operand))})"
+                            log.log_calc_error(operator_log)
+                            log.log_calc_error("^" * len(operator_log))
                         else:
                             operator_log = f"{calc_operator.__name__}"
-                            log(operator_log)
-                            log("^" * len(operator_log))
+                            log.log_calc_error(operator_log)
+                            log.log_calc_error("^" * len(operator_log))
                         # log(e.__repr__())
-                        log(e.__repr__())
+                        log.log_calc_error(e.__repr__())
                         # log(traceback.format_exc())
                         calc_tracker(calc_operator, record, operator_precedence, log)
                         return e
 
                     if calc_args_count:
-                        _seq = ", "
-                        log(f"{calc_operator.__name__}({_seq.join(map(str, calc_operand))}) = {product}")
+                        log(f"{calc_operator.__name__}({', '.join(map(str, calc_operand))}) = {product}")
 
                     if execute_check(product):
                         execute_complete(product)(globals(), locals())  # 执行Mark
@@ -203,7 +204,7 @@ def calc_main(expression: str, _format=True, _print=True, repeat_times: int = 3)
         # operate_log = f"{record.get_former_differ_expression(0, record.size)}"
         # log(original_expression)
         # log("~" * len(operate_log) + "^" * (len(original_expression) - len(operate_log)))
-        log(over_repeat.__repr__())
+        log.log_calc_error(over_repeat.__repr__())
         return
     if nums.size() == 1:
         log(f"output:{nums.top_element()}")
