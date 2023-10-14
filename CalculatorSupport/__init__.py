@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # |=========================|
 # |      Coded by Noob_0    |
-# | Noob_0-main@outlook.com |
+# | Noob_0-cards@outlook.com |
 # |=========================|
 __author__ = "Noob_0"
 __version__ = "1.0"

@@ -5,6 +5,7 @@ import json
 
 # 使用 Flask 创建一个简单的 Web 服务器
 app = Flask(__name__)
+CalculatorSupport.CalcType.set_calc_type(CalculatorSupport.CalcType.Fraction)
 
 
 @app.route('/')
@@ -76,4 +77,5 @@ def calculate():
 
 # 启动 Flask 应用
 if __name__ == "__main__":
+    app.config["TEMPLATES_AUTO_RELOAD"] = True
     app.run(debug=True)
