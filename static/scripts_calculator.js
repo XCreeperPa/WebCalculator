@@ -58,7 +58,7 @@ document.getElementById('calculatorForm').addEventListener('submit', function(e)
     let expression = e.target.elements.expression.value;
 
     // 使用 Fetch API 异步发送 POST 请求到服务器
-    fetch('/calculate', {
+    fetch('/calculator', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -83,6 +83,19 @@ document.getElementById("documentationButton").addEventListener("click", functio
 document.getElementById("userManualButton").addEventListener("click", function() {
     window.location.href = "http://127.0.0.1:5000/user-manual"; // 替换为你的目标URL
 });
+
+document.getElementById("aboutButton").addEventListener("click", function() {
+    window.location.href = "http://127.0.0.1:5000/about"; // 替换为你的目标URL
+});
+
+document.getElementById("settingsButton").addEventListener("click", function() {
+    window.location.href = "http://127.0.0.1:5000/settings"; // 替换为你的目标URL
+});
+
+document.getElementById("downloadButton").addEventListener("click", function() {
+    window.location.href = "http://127.0.0.1:5000/404"; // 替换为你的目标URL
+});
+
 document.getElementById("clearButton").addEventListener("click", function() {
     const cardContainer = document.getElementById('cards');
     cardContainer.innerHTML = '';});

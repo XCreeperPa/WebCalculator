@@ -216,6 +216,7 @@ def calc_main(expression: str, _format=True, _print=True, repeat_times: int = 3)
 
 def calc_format(expression: str):
     """语法糖处理"""
+    raise
     return CalculateFormatter.format(expression)
 
 

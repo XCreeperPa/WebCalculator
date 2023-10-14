@@ -14,29 +14,39 @@ def updated_index():
     return render_template('calculator.html')
 
 
+@app.route('/calculator')
+def updated_calculator():
+    # 使用 Flask 的 render_template 函数从 "calculator.html" 文件中加载 HTML 内容
+    return render_template('calculator.html')
+
+
 @app.route('/user-manual')
 def updated_UserManual():
-    # 使用 Flask 的 render_template 函数从 "documentation.html" 文件中加载 HTML 内容
+    # 使用 Flask 的 render_template 函数从 "user-manual.html" 文件中加载 HTML 内容
     return render_template('user-manual.html')
-
-
-@app.route('/get-user-manual')
-def get_UserManual():
-    docs_dir = os.path.join(app.static_folder, "user-manual")
-    all_files = [f for f in os.listdir(docs_dir) if f.endswith('.html')]
-
-    # 将index.html移动到列表的第一个位置
-    if "index.html" in all_files:
-        all_files.remove("index.html")
-        all_files.insert(0, "index.html")
-
-    return jsonify(all_files)
 
 
 @app.route('/documentation')
 def updated_documentation():
     # 使用 Flask 的 render_template 函数从 "documentation.html" 文件中加载 HTML 内容
     return render_template('documentation.html')
+
+
+@app.route('/about')
+def updated_about():
+    # 使用 Flask 的 render_template 函数从 "documentation.html" 文件中加载 HTML 内容
+    return render_template('about.html')
+
+
+@app.route('/settings')
+def updated_settings():
+    # 使用 Flask 的 render_template 函数从 "documentation.html" 文件中加载 HTML 内容
+    return render_template('settings.html')
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 
 @app.route('/get-docs')
@@ -52,7 +62,20 @@ def get_docs():
     return jsonify(all_files)
 
 
-@app.route('/calculate', methods=['POST'])
+@app.route('/get-user-manual')
+def get_UserManual():
+    docs_dir = os.path.join(app.static_folder, "user-manual")
+    all_files = [f for f in os.listdir(docs_dir) if f.endswith('.html')]
+
+    # 将index.html移动到列表的第一个位置
+    if "index.html" in all_files:
+        all_files.remove("index.html")
+        all_files.insert(0, "index.html")
+
+    return jsonify(all_files)
+
+
+@app.route('/calculator', methods=['POST'])
 def calculate():
     # 从请求中获取用户输入的表达式
     expression = request.form.get('expression')

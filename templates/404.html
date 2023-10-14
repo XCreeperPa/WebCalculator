@@ -1,0 +1,110 @@
+<!-- 声明文档类型为HTML5 -->
+<!DOCTYPE html>
+
+<!-- 开始HTML文档 -->
+<html lang="en">
+<!-- 头部区域开始，包含页面的元数据 -->
+<head>
+    <!-- 导入图标 -->
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <!-- 声明字符编码为UTF-8 -->
+    <meta charset="utf-8"/>
+    <!-- 设置页面的视口属性 -->
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <!-- 页面标题 -->
+    <title>云计算器 WebCalculator</title>
+    <!-- 设置浏览器兼容性 -->
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+{#    <meta name="viewport" content="width=device-width, initial-scale=1">#}
+{#    <!--Bootstrap CSS-->#}
+{#    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">#}
+{#    <!--jQuery-->#}
+{#    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>#}
+{#    <!--Bootstrap JS-->#}
+{#    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>#}
+    <!-- 导入CSS -->
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet"/>
+</head>
+<!-- 主体区域开始，包含页面的内容 -->
+<body>
+<div class="container">
+    <!-- 页面主标题 -->
+    <h1><span class="special-character">☁</span>云计算器 404</h1>
+</div>
+<div class="card" >
+    <p>哎呀，似乎你已经踏入了未知之境...
+    可能是因为点击了一个不明确的链接、输入了一个奇怪的URL，或者你当前没有浏览这里的权限。不管原因是什么，请仔细核实你的操作。如果感到迷茫，不妨联系我们的网站管理员或云计算器团队获取帮助。
+    </p>
+</div>
+    {#左下方的按钮容器#}
+    <div class="container" id="buttons_left">
+        <button id="goToHomePageButton">
+            <img src="{{ url_for('static', filename='icon/home.svg') }}" alt="回到主页">
+        </button>
+    </div>
+
+    <!-- 导入JS -->
+    <script src="{{ url_for('static', filename='scripts_settings.js') }}" defer></script>
+{#    <div class="container">#}
+{#        <!--对话框视图-->#}
+{#        <div class="modal fade" id="modal" tabindex="-1" role="dialog">#}
+{#            <div class="modal-dialog" role="document">#}
+{#                <div class="modal-content">#}
+{#                    <div class="modal-header" id="modal-header">#}
+{#                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>#}
+{#                        <h4 class="modal-title">历史记录</h4>#}
+{#                    </div>#}
+{#                    <div class="modal-body" id="modal-body">#}
+{#                        <ul class="list-group" id="history-list">#}
+{#                        </ul>#}
+{#                    </div>#}
+{#                    <div class="modal-footer" id="modal-footer">#}
+{#                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <!-- /.modal-content -->#}
+{#            </div>#}
+{#            <!-- /.modal-dialog -->#}
+{#        </div>#}
+{#        <!-- /.modal -->#}
+{##}
+{#        <div class="row">#}
+{#            <div class="col-sm-12 col-md-12 col-lg-12">#}
+{#                <canvas id="game" class="center-block"></canvas> <!--五子棋视图-->#}
+{#                <canvas id="menu" class="center-block"></canvas> <!--菜单视图-->#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+</body>
+{#<script src="{{ url_for('static', filename='out/Shapes/Shape.js') }}" ></script>#}
+{#<script src="{{ url_for('static', filename='out/Shapes/Circle.js') }}" ></script>#}
+{#<script src="{{ url_for('static', filename='out/Shapes/Rectangle.js') }}" ></script>#}
+{#<script src="{{ url_for('static', filename='out/Shapes/Line.js') }}" ></script>#}
+{#<script src="{{ url_for('static', filename='out/Shapes/ChessboardShape.js') }}" ></script>#}
+{#<script src="{{ url_for('static', filename='out/Shapes/ChessShape.js') }}" ></script>#}
+{#<script src="{{ url_for('static', filename='out/Shapes/TextShape.js') }}" ></script>#}
+{#<script src="{{ url_for('static', filename='out/Shapes/TwoHalfCircle.js') }}" ></script>#}
+{#<script src="{{ url_for('static', filename='out/Shapes/TextCircle.js') }}" ></script>#}
+{#<script src="{{ url_for('static', filename='out/Themes/Theme.js') }}" ></script>#}
+{#<script src="{{ url_for('static', filename='out/Themes/DefaultTheme.js') }}" ></script>#}
+{#<script src="{{ url_for('static', filename='out/Themes/VividTheme.js') }}" ></script>#}
+{#<script src="{{ url_for('static', filename='out/Views/CanvasView.js') }}" ></script>#}
+{#<script src="{{ url_for('static', filename='out/Views/GomokuView.js') }}" ></script>#}
+{#<script src="{{ url_for('static', filename='out/Views/MenuView.js') }}" ></script>#}
+{#<script src="{{ url_for('static', filename='out/Views/DialogView.js') }}" ></script>#}
+{#<script src="{{ url_for('static', filename='out/Models/Player.js') }}" ></script>#}
+{#<script src="{{ url_for('static', filename='out/Models/Chess.js') }}" ></script>#}
+{#<script src="{{ url_for('static', filename='out/Models/Chessboard.js') }}" ></script>#}
+{#<script src="{{ url_for('static', filename='out/Models/GomokuDB.js') }}" ></script>#}
+{#<script src="{{ url_for('static', filename='out/AIs/GomokuAI.js') }}" ></script>#}
+{#<script src="{{ url_for('static', filename='out/AIs/AIScore.js') }}" ></script>#}
+{#<script src="{{ url_for('static', filename='out/AIs/Matrix.js') }}" ></script>#}
+{#<!-- <script src="{{ url_for('static', filename='out/AIs/TestAI_1.js') }}" ></script> -->#}
+{#<script src="{{ url_for('static', filename='out/AIs/TestAI_2.js') }}" ></script>#}
+{#<script src="{{ url_for('static', filename='out/GomokuGame.js') }}" ></script>#}
+{#<script src="{{ url_for('static', filename='out/GomokuViewController.js') }}" ></script>#}
+{#<script type="text/javascript">#}
+{#    new GomokuViewController(true);#}
+{#</script>#}
+
+</html>

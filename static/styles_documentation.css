@@ -80,3 +80,32 @@ label {
     align-items: center;      /* 垂直居中 */
     margin-bottom:20px;
 }
+
+#buttons_left{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    margin: 80px;
+    margin-bottom: 20px;
+}
+
+#buttons_left button{
+    margin: 5px;
+    background: none;
+    border: none;
+    padding: 3px;
+    cursor: pointer;
+    outline: none;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+    height: auto;
+    color: #eee;
+}
+
+#buttons_left button img{
+    display: block;
+    width: 60px;
+    height: auto;
+}
