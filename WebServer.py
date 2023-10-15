@@ -3,7 +3,7 @@ import os
 import CalculatorSupport
 import json
 
-# 使用 Flask 创建一个简单的 Web 服务器
+# 使用 Flask 创建一个简单的 Web  服务器
 app = Flask(__name__)
 CalculatorSupport.CalcType.set_calc_type(CalculatorSupport.CalcType.Fraction)
 

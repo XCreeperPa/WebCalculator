@@ -200,6 +200,7 @@ def calc_main(expression: str, _format=True, _print=True, repeat_times: int = 3)
     # else:
     #     return [nums.top_element()]
     # 返回结果
+    log.log_debug("nums:"+str(nums))
     if over_repeat:
         # operate_log = f"{record.get_former_differ_expression(0, record.size)}"
         # log(original_expression)
@@ -216,7 +217,6 @@ def calc_main(expression: str, _format=True, _print=True, repeat_times: int = 3)
 
 def calc_format(expression: str):
     """语法糖处理"""
-    raise
     return CalculateFormatter.format(expression)
 
 
