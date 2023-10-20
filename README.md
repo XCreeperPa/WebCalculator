@@ -3,16 +3,16 @@
 ## 简介
 
 云计算器是一个基于Python Flask的互联网计算器服务，旨在为用户提供更便捷、强大的计算器服务。云计算器利用云服务的优势，允许用户随时随地访问，无需安装和部署。它支持多端互联，数据互通，以提高效率和用户体验。
-![WebCalculator.png](README_image/WebCalculator.png)
+![WebCalculator.png](https://github.com/XCreeperPa/WebCalculator/raw/main/README_image/WebCalculator.png)
 
 ## 基本用法
 
 1. 在浏览器输入服务器的URL（端口号默认5000），下文以http://127.0.0.1:5000为例。
-![openWebPage.jpg](README_image/openWebPage.jpg)
+![openWebPage.jpg](https://github.com/XCreeperPa/WebCalculator/raw/main/README_image/openWebPage.jpg)
 2. 按下回车进入对应页面。
-![mainPage.jpg](README_image/mainPage.jpg)
+![mainPage.jpg](https://github.com/XCreeperPa/WebCalculator/raw/main/README_image/mainPage.jpg)
 3. 在输入框中键入表达式，按下回车开始计算
-![Calculate.jpg](README_image/Calculate.jpg)
+![Calculate.jpg](https://github.com/XCreeperPa/WebCalculator/raw/main/README_image/Calculate.jpg)
 
 更多用法详见用户手册和技术文档。
 
