@@ -1,0 +1,17 @@
+#fileContent {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+}
+.card {
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 20px;
+    padding: 20px;
+    max-height: 400px;
+    width: 700px;
+    text-align: left;
+    margin: 15px 0;
+    font-size: 20px;
+    color: #eee;
+    overflow: auto;
+}

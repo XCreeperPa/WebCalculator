@@ -23,6 +23,7 @@
 <head>
     <!-- 导入CSS -->
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static', filename='css/about.css') }}" rel="stylesheet"/>
     <!-- 导入图标 -->
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
     <!-- 声明字符编码为UTF-8 -->
@@ -37,26 +38,30 @@
 <!-- 主体区域开始，包含页面的内容 -->
 <body>
 <div class="container">
-            <div class="container">
-                <!-- 页面主标题 -->
-                <h1><span class="special-character">☁</span>云计算器 关于</h1>
-            </div>
-    </div>
-        {#左下方的按钮容器#}
-        <div class="container" id="buttons_left">
-            <button id="goToHomePageButton">
-                <img src="{{ url_for('static', filename='icon/home.svg') }}" alt="回到主页">
-            </button>
-        </div>
+    <!-- 页面主标题 -->
+    <h1><span class="special-character">☁</span>云计算器 关于</h1>
+</div>
+
+{#左下方的按钮容器#}
+<div class="container" id="buttons_left">
+    <button id="goToHomePageButton">
+        <img src="{{ url_for('static', filename='icon/home.svg') }}" alt="回到主页">
+    </button>
+</div>
+<div class="container" id="cards">
 <div class="card" >
-    <p>版本: v1.0</p>
+    <p>版本: v1.1.0</p>
     <p>项目主页:
         <a href="https://gitee.com/xcpcn/web-calculator-dev/">Gitee</a>
         <a href="https://github.com/XCreeperPa/WebCalculator">Github</a>
     </p>
+    <p>开源许可证:GPLv3</p>
 </div>
-
+<div class="card">
+    <pre id="fileContent"></pre>
+</div>
+</div>
     <!-- 导入JS -->
-    <script src="{{ url_for('static', filename='scripts_settings.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/about.js') }}" defer></script>
 </body>
 </html>

@@ -13,6 +13,7 @@
 # WebCalculator is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License along with WebCalculator. If not, see <https://www.gnu.org/licenses/>.
+
 from flask import Flask, request, jsonify, render_template
 import os
 import CalculatorSupport
@@ -63,6 +64,21 @@ def updated_settings():
 def page_not_found(e):
     return render_template('404.html'), 404
 
+
+@app.route('/get_license')
+def get_license():
+    # 拼接静态文件的绝对路径，使用 Flask 应用程序的 root_path 属性
+    static_file_path = app.root_path + '/static/LICENSE'
+
+    try:
+        # 打开并读取静态文件内容
+        with open(static_file_path, 'r') as file:
+            license_text = file.read()
+        return license_text
+    except FileNotFoundError:
+        return "文件未找到"
+    except Exception as e:
+        return str(e)
 
 @app.route('/get-docs')
 def get_docs():
