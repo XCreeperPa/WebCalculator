@@ -1,11 +1,11 @@
 # 云计算器
 
-## 简介
+## 一、简介
 
 云计算器是一个基于Python Flask的互联网计算器服务，旨在为用户提供更便捷、强大的计算器服务。云计算器利用云服务的优势，允许用户随时随地访问，无需安装和部署。它支持多端互联，数据互通，以提高效率和用户体验。
 ![WebCalculator.png](https://github.com/XCreeperPa/WebCalculator/raw/main/README_image/WebCalculator.png)
 
-## 基本用法
+## 二、基本用法
 
 1. 在浏览器输入服务器的URL（端口号默认5000），下文以http://127.0.0.1:5000为例。
 ![openWebPage.jpg](https://github.com/XCreeperPa/WebCalculator/raw/main/README_image/openWebPage.jpg)
@@ -16,9 +16,16 @@
 
 更多用法详见用户手册和技术文档。
 
-## 服务端部署
+## 三、服务端部署
 
-### 环境和依赖
+### 3.1使用可执行文件部署
+
+1. 下载并解压WebCalculator v1.1 WindowsEXE.zip（或者其更新版本）
+2. 双击运行startServer.exe
+
+### 3.2使用源代码部署
+
+#### 3.2.1环境和依赖
 
 为了成功部署云计算器，请按照以下步骤配置您的环境和依赖：
 
@@ -64,7 +71,7 @@
 
    确保您已正确安装并配置Flask。
 
-### 获取源代码
+#### 3.2.2获取源代码
 
 要获取云计算器的源代码，请使用Git工具，按照以下步骤进行：
 
@@ -90,7 +97,7 @@
    git clone https://gitee.com/xcpcn/WebCalculator.git
    ```
 
-### 启动服务端
+#### 3.2.3启动服务端
 
 一旦您成功获取了源代码，您可以启动服务端。不同操作系统下有不同的方法：
 
@@ -104,18 +111,18 @@
    2. 使用`cd`命令切换到源代码根目录。
    3. 运行以下命令：`python WebServer.py`
 
-### 贡献者
+## 四、贡献者
 
 感谢以下贡献者为项目的发展做出了贡献：
 
 - XCreeperPa：前端开发、Web服务器开发、架构设计
 - Noob_0：算法设计、架构设计
 
-### 许可证
+## 五、许可证
 
 本项目使用GPLv3许可证。有关详细信息，请参阅LICENSE文件。
 
-### 联系我们
+## 六、联系我们
 
 如有任何问题或建议，欢迎联系我们：
 
